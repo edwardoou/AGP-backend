@@ -1,6 +1,6 @@
 import app from './app'
 
-// escuche en el puerto 
+// variable port de 'app'
 app.listen(app.get('port'))
 
-console.log('servidor en puerto',app.get('port'))
+console.log('Servidor en puerto',app.get('port'))

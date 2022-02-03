@@ -1,5 +1,12 @@
 import { Router } from "express";
-import { createTrabajador,getTrabajadores } from "../controllers/trabajadores.controller";
+import {
+  createTrabajador,
+  getTrabajadores,
+  getTrabajadorById,
+  deleteTrabajador,
+  getTotalTrabajadores,
+  updateTrabajador,
+} from "../controllers/trabajadores.controller";
 
 const router = Router();
 
@@ -10,12 +17,15 @@ router.get("/trabajadores", getTrabajadores);
 router.post("/trabajadores", createTrabajador);
 
 // GET BY ID
-//router.get("/projects", );
+router.get("/trabajadores/:id", getTrabajadorById);
+
+//TOTAL(OPCIONAL)
+router.get("/trabajadores/count", getTotalTrabajadores);
 
 //DELETE
-//router.delete("/projects", );
+router.delete("/trabajadores/:id", deleteTrabajador);
 
 //PUT
-//router.put("/projects", );
+router.put("/trabajadores/:id", updateTrabajador);
 
 export default router;

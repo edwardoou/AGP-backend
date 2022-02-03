@@ -1,5 +1,4 @@
-import { getConnection, sql } from "../database/connection";
-import { querys } from "../database/querys";
+import { getConnection, sql, queries} from "../database";
 
 //GET
 export const getProjects = async (req, res) => {
@@ -7,7 +6,7 @@ export const getProjects = async (req, res) => {
     //llamar a la conexion
     const pool = await getConnection();
     //peticion a la db
-    const result = await pool.request().query(querys.getAllProjects);
+    const result = await pool.request().query(queries.getAllProjects);
     res.json(result.recordset);
   } catch (error) {
     res.status(500);
@@ -54,8 +53,24 @@ export const createProject = async (req, res) => {
       .input("estado", sql.VarChar, estado)
       .input("area_responsable", sql.Int, area_responsable)
       .input("area_usuario", sql.Int, area_usuario)
-      .query(querys.addProject);
-    res.json({ nombre, telefono, direccion, observaciones });
+      .query(queries.addProject);
+    res.json({
+      modelo,
+      nombre,
+      responsable_id,
+      prioridad,
+      tipo,
+      responsabilidad,
+      descripcion,
+      costo,
+      archivo,
+      fecha_identificacion,
+      fecha_inicio,
+      fecha_cierre,
+      estado,
+      area_responsable,
+      area_usuario,
+    });
   } catch (error) {
     res.status(500);
     res.send(error.message);

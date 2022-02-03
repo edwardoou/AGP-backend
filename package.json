@@ -1,11 +1,12 @@
 {
-  "name": "agp",
+  "name": "agp-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend de la aplicacion de AGP",
   "main": "index.js",
   "scripts": {
     "babel-node": "babel-node",
-    "dev": "nodemon --exec npm run babel-node src/index.js"
+    "dev": "nodemon --exec npm run babel-node src/index.js",
+    "build": ""
   },
   "keywords": [],
   "author": "",

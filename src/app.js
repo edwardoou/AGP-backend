@@ -8,8 +8,10 @@ import trabajadoresRoutes from "./routes/trabajadores.routes"
 // objecto 'app' para config. express
 const app = express();
 
-//settings
-app.set("port", config.port || 3000);
+/* settings */
+
+//puerto del servidor
+app.set("port", config.port);
 //middlewares para que express entienda data en json, y pueda recibir data en forms html
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

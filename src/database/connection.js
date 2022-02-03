@@ -14,12 +14,13 @@ const dbSettings = {
   },
 };
 
-/* await espera a que una funcion async sea terminada o rechazada */
+/* "await" espera a que una funcion "async" sea terminada o rechazada, funcionan juntos */
+
 //conexion
 export async function getConnection() {
   try {
     const pool = await sql.connect(dbSettings);
-    //const result = await pool.request().query("SELECT 1");
+    //para probar aca -> const result = await pool.request().query("SELECT 1");
     return pool;
   } catch (error) {
     console.error(error);
