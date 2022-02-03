@@ -1,0 +1,26 @@
+PAQUETES USADOS DE NODE (con ver. de uso inicial):
+
+permite peticiones de otro servidor
+    "cors": "^2.8.5",
+definir variables de entorno en el SO no en un archivo, mayor seguridad
+    "dotenv": "^15.0.0",
+framework para config rutas
+    "express": "^4.17.2",
+ver las peticiones
+    "morgan": "^1.10.0",
+modulo para config de sql server
+    "mssql": "^8.0.1"
+reiniciar el codigo cada vez que se hace un cambio
+    "nodemon": "^2.0.15"
+compilar de js que convierte js moderno a soportado
+    babel
+validacion que se reciba un dato
+    "express-validator": "^6.14.0",
+
+SCRIPTS:
+al ejecutar "npm run dev" ejecutara el siguiente comando ejecutando index.js haciendo uso de nodemon
+    "dev": "nodemon src/index.js --exec babel-node"
+
+NOTA:
+-D : --save-dev -> is used to save the package for development purpose. Example: unit tests, minification..
+--save o el normal sin nada-> is used to save the package required for the application to run.

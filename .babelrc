@@ -1,0 +1,5 @@
+/* configuracion necesaria para que babel funcione */
+/* preset-env : convierte codigo de js moderno a actual */
+{
+    "presets":["@babel/preset-env"]
+}
