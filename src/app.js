@@ -4,6 +4,7 @@ import express from "express";
 import config from "./config";
 import projectsRoutes from "./routes/projects.routes";
 import trabajadoresRoutes from "./routes/trabajadores.routes"
+import accionesRoutes from "./routes/acciones.routes";
 
 // objecto 'app' para config. express
 const app = express();
@@ -18,5 +19,6 @@ app.use(express.urlencoded({ extended: false }));
 //rutas
 app.use(projectsRoutes);
 app.use(trabajadoresRoutes);
+app.use(accionesRoutes);
 
 export default app;
