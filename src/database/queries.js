@@ -53,4 +53,14 @@ export const queries = {
     "UPDATE [agpdb].[agpdb].[actividades] SET " +
     "nombre=@nombre, responsable_id=@responsable_id, responsabilidad=@responsabilidad,descripcion=@descripcion, archivo=@archivo,fecha_limite=@fecha_limite, estado=@estado, projects_id=@projects_id " +
     "WHERE idactividades = @idactividades",
+  //Areas
+  getAllAreas: "SELECT * FROM [agpdb].[agpdb].[areas]",
+  addArea:
+    "INSERT INTO [agpdb].[agpdb].[areas] (nombre,sede, empresa) values (@nombre,@sede, @empresa)",
+  getAreasById:
+    "SELECT * FROM [agpdb].[agpdb].[areas] WHERE idareas = @idareas",
+  deleteAreasById:
+    "DELETE FROM [agpdb].[agpdb].[areas] WHERE idareas = @idareas",
+  updateArea:
+    "UPDATE [agpdb].[agpdb].[areas] SET nombre=@nombre, sede= @sede, empresa=@empresa WHERE idareas = @idareas",
 };

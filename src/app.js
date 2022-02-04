@@ -6,6 +6,7 @@ import projectsRoutes from "./routes/projects.routes";
 import trabajadoresRoutes from "./routes/trabajadores.routes"
 import accionesRoutes from "./routes/acciones.routes";
 import actividadesRoutes from "./routes/actividades.routes";
+import areasRoutes from "./routes/areas.routes";
 
 // objecto 'app' para config. express
 const app = express();
@@ -22,5 +23,6 @@ app.use(projectsRoutes);
 app.use(trabajadoresRoutes);
 app.use(accionesRoutes);
 app.use(actividadesRoutes);
+app.use(areasRoutes);
 
 export default app;
