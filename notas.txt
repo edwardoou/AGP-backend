@@ -21,6 +21,8 @@ SCRIPTS:
 al ejecutar "npm run dev" ejecutara el siguiente comando ejecutando index.js haciendo uso de nodemon
     "dev": "nodemon src/index.js --exec babel-node"
 
+Para ejecutar los Requests es necesario tener la extension RESTCliente de VSCode
+
 NOTA:
 -D : --save-dev -> is used to save the package for development purpose. Example: unit tests, minification..
 --save o el normal sin nada-> is used to save the package required for the application to run.

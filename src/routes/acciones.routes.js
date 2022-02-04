@@ -1,5 +1,11 @@
 import { Router } from "express";
-import { createAccion, deleteAccion, getAccionById, getAcciones, updateAccion } from "../controllers/acciones.controller";
+import {
+  createAccion,
+  deleteAccion,
+  getAccionById,
+  getAcciones,
+  updateAccion,
+} from "../controllers/acciones.controller";
 
 const router = Router();
 
