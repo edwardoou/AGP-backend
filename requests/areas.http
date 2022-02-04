@@ -1,0 +1,27 @@
+@api = http://localhost:3000/areas
+GET {{api}}
+###
+POST {{api}}
+Content-Type: application/json
+
+{
+    "nombre": "AAAAAA",
+    "sede": "Perusalen",
+    "empresa": "PRECOR"
+}
+
+### get by id
+GET {{api}}/4
+
+### delete product 
+DELETE {{api}}/5
+
+### update
+PUT {{api}}/4
+Content-Type: application/json
+
+{
+    "nombre": "Testttt",
+    "sede": "Perusalen",
+    "empresa": "PRECOR"
+}

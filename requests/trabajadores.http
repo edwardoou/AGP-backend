@@ -1,0 +1,32 @@
+@api = http://localhost:3000/trabajadores
+GET {{api}}
+###
+POST {{api}}
+Content-Type: application/json
+
+{
+    "nombre": "Melany",
+    "telefono": "1231241",
+    "direccion": "Ate",
+    "observaciones": "Promedio"
+}
+
+### get by id
+GET {{api}}/9
+
+### delete product 
+DELETE {{api}}/1007
+
+### get count
+GET {{api}}/count
+
+### update
+PUT {{api}}/8
+Content-Type: application/json
+
+{
+    "nombre": "Alets",
+    "telefono": "1231241",
+    "direccion": "Ate",
+    "observaciones": "Promedio"
+}

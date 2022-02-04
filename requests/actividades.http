@@ -1,0 +1,37 @@
+@api = http://localhost:3000/actividades
+GET {{api}}
+###
+POST {{api}}
+Content-Type: application/json
+
+{
+    "nombre": "AAA",
+    "responsable_id": 1,
+    "responsabilidad": "adasdasd",
+    "descripcion": "ASDad",
+    "archivo": null,
+    "fecha_limite": "2022-02-04T00:00:00.000Z",
+    "estado": "asdasd",
+    "projects_id": 1
+}
+
+### get by id
+GET {{api}}/9
+
+### delete product 
+DELETE {{api}}/8
+
+### update
+PUT {{api}}/9
+Content-Type: application/json
+
+{
+    "nombre": "Tesssssst",
+    "responsable_id": 1,
+    "responsabilidad": "adasdasd",
+    "descripcion": "ASDad",
+    "archivo": null,
+    "fecha_limite": "2022-02-04T00:00:00.000Z",
+    "estado": "asdasd",
+    "projects_id": 1
+}
