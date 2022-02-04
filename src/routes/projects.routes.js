@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createProject, getProjects } from "../controllers/projects.controller";
+import { createProject, getProjects,getProjectById, deleteProject, updateProject } from "../controllers/projects.controller";
 
 const router = Router();
 
@@ -10,12 +10,12 @@ router.get("/projects", getProjects);
 router.post("/projects", createProject);
 
 // GET BY ID
-//router.get("/projects", );
+router.get("/projects/:id", getProjectById);
 
 //DELETE
-//router.delete("/projects", );
+router.delete("/projects/:id", deleteProject);
 
 //PUT
-//router.put("/projects", );
+router.put("/projects/:id", updateProject);
 
 export default router;

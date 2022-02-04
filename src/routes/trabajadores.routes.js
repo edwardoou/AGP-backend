@@ -16,7 +16,7 @@ router.get("/trabajadores", getTrabajadores);
 //POST
 router.post("/trabajadores", createTrabajador);
 
-//TOTAL
+//TOTAL, las urls tipo string deben ir antes de la de tipo int.
 router.get("/trabajadores/count", getCountTrabajadores);
 
 // GET BY ID
