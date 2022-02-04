@@ -4,7 +4,7 @@ import {
   getTrabajadores,
   getTrabajadorById,
   deleteTrabajador,
-  getTotalTrabajadores,
+  getCountTrabajadores,
   updateTrabajador,
 } from "../controllers/trabajadores.controller";
 
@@ -16,11 +16,11 @@ router.get("/trabajadores", getTrabajadores);
 //POST
 router.post("/trabajadores", createTrabajador);
 
+//TOTAL
+router.get("/trabajadores/count", getCountTrabajadores);
+
 // GET BY ID
 router.get("/trabajadores/:id", getTrabajadorById);
-
-//TOTAL(OPCIONAL)
-router.get("/trabajadores/count", getTotalTrabajadores);
 
 //DELETE
 router.delete("/trabajadores/:id", deleteTrabajador);

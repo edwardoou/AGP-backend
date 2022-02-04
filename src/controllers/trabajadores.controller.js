@@ -37,15 +37,16 @@ export const createTrabajador = async (req, res) => {
 
 //GET BY ID
 export const getTrabajadorById = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
     const pool = await getConnection();
     const result = await pool
       .request()
-      .input("id", sql.id, id)
+      //.input(name,value)
+      .input("idtrabajadores", id)
       .query(queries.getTrabajadoresById);
-    //porque es send y no json??? probar..
-    res.send(result.recordset[0]);
+    //res.send y json son lo mismo, "json" convierte todo a json usando el send
+    res.json(result.recordset[0]);
   } catch (error) {
     res.status(500);
     res.send(error.message);
@@ -54,12 +55,12 @@ export const getTrabajadorById = async (req, res) => {
 
 //DELETE
 export const deleteTrabajador = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
     const pool = await getConnection();
     await pool
       .request()
-      .input("id", sql.id, id)
+      .input("idtrabajadores", id)
       .query(queries.deleteTrabajadorById);
     res.sendStatus(204);
   } catch (error) {
@@ -69,7 +70,7 @@ export const deleteTrabajador = async (req, res) => {
 };
 
 //TOTAL
-export const getTotalTrabajadores = async (req, res) => {
+export const getCountTrabajadores = async (req, res) => {
   try {
     const pool = await getConnection();
     const result = await pool.request().query(queries.getCountTrabajadores);
@@ -89,7 +90,7 @@ export const updateTrabajador = async (req, res) => {
     const pool = await getConnection();
     await pool
       .request()
-      .input("id", sql.id, id)
+      .input("idtrabajadores", id)
       .input("nombre", sql.VarChar, nombre)
       .input("telefono", sql.VarChar, telefono)
       .input("direccion", sql.VarChar, direccion)
