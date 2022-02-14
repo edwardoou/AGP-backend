@@ -1,7 +1,5 @@
 PAQUETES USADOS DE NODE (con ver. de uso inicial):
 
-permite peticiones de otro servidor
-    "cors": "^2.8.5",
 definir variables de entorno en el SO no en un archivo, mayor seguridad
     "dotenv": "^15.0.0",
 framework para config rutas
@@ -16,6 +14,10 @@ compilar de js que convierte js moderno a soportado
     babel
 validacion que se reciba un dato
     "express-validator": "^6.14.0",
+Cross origin resource sharing (CORS) es un mecanismo basado en cabeceras http 
+que permite a los servidores indicar a los navegadores si deben permitir la carga 
+de recursos para un origen distinto al suyo (dominio, esquema o puerto).
+    "cors": "^2.8.5",
 
 SCRIPTS:
 al ejecutar "npm run dev" ejecutara el siguiente comando ejecutando index.js haciendo uso de nodemon

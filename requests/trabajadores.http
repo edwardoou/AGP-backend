@@ -1,18 +1,18 @@
-@api = http://localhost:3000/trabajadores
+@api = http://localhost:4000/trabajadores
 GET {{api}}
 ###
 POST {{api}}
 Content-Type: application/json
 
 {
-    "nombre": "Melany",
+    "nombre": "Palolo",
     "telefono": "1231241",
     "direccion": "Ate",
     "observaciones": "Promedio"
 }
 
 ### get by id
-GET {{api}}/9
+GET {{api}}/2
 
 ### delete product 
 DELETE {{api}}/1007
@@ -21,7 +21,7 @@ DELETE {{api}}/1007
 GET {{api}}/count
 
 ### update
-PUT {{api}}/8
+PUT {{api}}/2
 Content-Type: application/json
 
 {

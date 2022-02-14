@@ -1,4 +1,4 @@
-@api = http://localhost:3000/projects
+@api = http://localhost:4000/projects
 GET {{api}}
 ###
 POST {{api}}
@@ -12,29 +12,33 @@ Content-Type: application/json
     "tipo": "Estandar",
     "responsabilidad": "Lider",
     "descripcion": "Aplicacion",
-    "costo": 0,
+    "costo": 20,
     "archivo": null,
     "fecha_identificacion": "2022-12-01T00:00:00.000Z",
     "fecha_inicio": "2022-12-01T00:00:00.000Z",
     "fecha_cierre": "2022-12-01T00:00:00.000Z",
     "estado": "En desarrollo",
-    "area_responsable": 1,
-    "area_usuario": 2
+    "area_responsable": "Gestion",
+    "area_usuario": "Innovacion",
+    "empresa_responsable": "Maxco",
+    "empresa_usuario": "Precor",
+    "sede_responsable": "PLANTA",
+    "sede_usuario": "QUBO"
 }
 
 ### get by id
-GET {{api}}/1002
+GET {{api}}/1
 
 ### delete product 
-DELETE {{api}}/1005
+DELETE {{api}}/3
 
 ### update
-PUT {{api}}/1011
+PUT {{api}}/1
 Content-Type: application/json
 
 {
-    "modelo": "TEsttt",
-    "nombre": "AGP",
+    "modelo": "Innovacion",
+    "nombre": "AGP - Test de Update",
     "responsable_id": 1,
     "prioridad": "Alta",
     "tipo": "Estandar",
@@ -46,6 +50,10 @@ Content-Type: application/json
     "fecha_inicio": "2022-12-01T00:00:00.000Z",
     "fecha_cierre": "2022-12-01T00:00:00.000Z",
     "estado": "En desarrollo",
-    "area_responsable": 1,
-    "area_usuario": 2
+    "area_responsable": "Gestion",
+    "area_usuario": "Innovacion",
+    "empresa_responsable": "Maxco",
+    "empresa_usuario": "Precor",
+    "sede_responsable": "PLANTA",
+    "sede_usuario": "QUBO"
 }

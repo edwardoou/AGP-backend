@@ -1,4 +1,4 @@
-@api = http://localhost:3000/actividades
+@api = http://localhost:4000/actividades
 GET {{api}}
 ###
 POST {{api}}

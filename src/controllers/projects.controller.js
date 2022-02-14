@@ -1,4 +1,3 @@
-import req from "express/lib/request";
 import { getConnection, sql, queries } from "../database";
 
 //GET
@@ -33,6 +32,10 @@ export const createProject = async (req, res) => {
     estado,
     area_responsable,
     area_usuario,
+    empresa_responsable,
+    empresa_usuario,
+    sede_responsable,
+    sede_usuario,
   } = req.body;
 
   try {
@@ -52,8 +55,12 @@ export const createProject = async (req, res) => {
       .input("fecha_inicio", sql.Date, fecha_inicio)
       .input("fecha_cierre", sql.Date, fecha_cierre)
       .input("estado", sql.VarChar, estado)
-      .input("area_responsable", sql.Int, area_responsable)
-      .input("area_usuario", sql.Int, area_usuario)
+      .input("area_responsable", sql.VarChar, area_responsable)
+      .input("area_usuario", sql.VarChar, area_usuario)
+      .input("empresa_responsable", sql.VarChar, empresa_responsable)
+      .input("empresa_usuario", sql.VarChar, empresa_usuario)
+      .input("sede_responsable", sql.VarChar, sede_responsable)
+      .input("sede_usuario", sql.VarChar, sede_usuario)
       .query(queries.addProject);
     res.json({
       modelo,
@@ -71,6 +78,10 @@ export const createProject = async (req, res) => {
       estado,
       area_responsable,
       area_usuario,
+      empresa_responsable,
+      empresa_usuario,
+      sede_responsable,
+      sede_usuario,
     });
   } catch (error) {
     res.status(500);
@@ -130,6 +141,10 @@ export const updateProject = async (req, res) => {
     estado,
     area_responsable,
     area_usuario,
+    empresa_responsable,
+    empresa_usuario,
+    sede_responsable,
+    sede_usuario,
   } = req.body;
   try {
     const pool = await getConnection();
@@ -149,8 +164,12 @@ export const updateProject = async (req, res) => {
       .input("fecha_inicio", sql.Date, fecha_inicio)
       .input("fecha_cierre", sql.Date, fecha_cierre)
       .input("estado", sql.VarChar, estado)
-      .input("area_responsable", sql.Int, area_responsable)
-      .input("area_usuario", sql.Int, area_usuario)
+      .input("area_responsable", sql.VarChar, area_responsable)
+      .input("area_usuario", sql.VarChar, area_usuario)
+      .input("empresa_responsable", sql.VarChar, empresa_responsable)
+      .input("empresa_usuario", sql.VarChar, empresa_usuario)
+      .input("sede_responsable", sql.VarChar, sede_responsable)
+      .input("sede_usuario", sql.VarChar, sede_usuario)
       .query(queries.updateProject);
     res.json({
       id,
@@ -169,6 +188,10 @@ export const updateProject = async (req, res) => {
       estado,
       area_responsable,
       area_usuario,
+      empresa_responsable,
+      empresa_usuario,
+      sede_responsable,
+      sede_usuario,
     });
   } catch (error) {
     res.status(500);
