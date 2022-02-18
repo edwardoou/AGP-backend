@@ -1,4 +1,4 @@
-import { getConnection, sql, queries } from "../database";
+import { getConnection, sql} from "../database";
 
 //GET
 export const getTrabajadores = async (req, res) => {
@@ -6,7 +6,7 @@ export const getTrabajadores = async (req, res) => {
     //llamar a la conexion
     const pool = await getConnection();
     //peticion a la db
-    const result = await pool.request().query(queries.getAllTrabajadores);
+    const result = await pool.request().execute("agpdb.getAllTrabajadores");
     //retorna solo el recordset de la consulta
     res.json(result.recordset);
   } catch (error) {
@@ -48,10 +48,9 @@ export const createTrabajador = async (req, res) => {
       .input("fecha_cese", sql.Date, fecha_cese)
       .input("categoria", sql.VarChar, categoria)
       .input("sede", sql.VarChar, sede)
-      .input("empresa", sql.VarChar, empresa)
       .input("area", sql.VarChar, area)
       .input("puesto", sql.VarChar, puesto)
-      .execute("agpdb.addTrabajadores")
+      .execute("agpdb.addTrabajadores");
     res.json({
       foto,
       nombre,
@@ -82,7 +81,7 @@ export const getTrabajadorById = async (req, res) => {
       .request()
       //.input(name,value)
       .input("idtrabajadores", id)
-      .query(queries.getTrabajadoresById);
+      .execute("agpdb.getTrabajadoresById");
     //res.send y json son lo mismo, "json" convierte todo a json usando el send
     res.json(result.recordset[0]);
   } catch (error) {
@@ -99,7 +98,7 @@ export const deleteTrabajador = async (req, res) => {
     await pool
       .request()
       .input("idtrabajadores", id)
-      .execute("agp.deleteTrabajadores");
+      .execute("agpdb.deleteTrabajadores");
     res.sendStatus(204);
   } catch (error) {
     res.status(500);
@@ -111,7 +110,7 @@ export const deleteTrabajador = async (req, res) => {
 export const getCountTrabajadores = async (req, res) => {
   try {
     const pool = await getConnection();
-    const result = await pool.request().query(queries.getCountTrabajadores);
+    const result = await pool.request().execute("agpdb.getCountTrabajadores");
     //retorna primer valor, luego el valor el String vacio
     res.json(result.recordset[0][""]);
   } catch (error) {
@@ -154,7 +153,6 @@ export const updateTrabajador = async (req, res) => {
       .input("fecha_cese", sql.Date, fecha_cese)
       .input("categoria", sql.VarChar, categoria)
       .input("sede", sql.VarChar, sede)
-      .input("empresa", sql.VarChar, empresa)
       .input("area", sql.VarChar, area)
       .input("puesto", sql.VarChar, puesto)
       .execute("agpdb.updateTrabajadores");

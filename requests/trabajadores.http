@@ -5,28 +5,46 @@ POST {{api}}
 Content-Type: application/json
 
 {
-    "nombre": "Palolo",
-    "telefono": "1231241",
-    "direccion": "Ate",
-    "observaciones": "Promedio"
+    "foto": null,
+    "nombre": "Palolo Ramos",
+    "telefono": "12313212",
+    "direccion": "Test",
+    "observacion": "12312",
+    "sexo": "Masculino",
+    "fecha_nacimiento": "2022-02-20",
+    "fecha_ingreso": "2022-02-20",
+    "fecha_cese": "2022-02-20",
+    "categoria": "2022-02-20",
+    "sede": "precor",
+    "area": "innovacion",
+    "puesto": "pasante"
 }
 
 ### get by id
 GET {{api}}/2
 
 ### delete product 
-DELETE {{api}}/1007
+DELETE {{api}}/2
 
 ### get count
 GET {{api}}/count
 
 ### update
-PUT {{api}}/2
+PUT {{api}}/5
 Content-Type: application/json
 
 {
-    "nombre": "Alets",
-    "telefono": "1231241",
-    "direccion": "Ate",
-    "observaciones": "Promedio"
+    "foto": null,
+    "nombre": "Palolo Ramos",
+    "telefono": "12313212",
+    "direccion": "Test",
+    "observacion": "12312",
+    "sexo": "Masculino",
+    "fecha_nacimiento": "2022-02-20",
+    "fecha_ingreso": "2022-02-20",
+    "fecha_cese": "2022-02-20",
+    "categoria": "2022-02-20",
+    "sede": "precor",
+    "area": "innovacion",
+    "puesto": "pasante"
 }

@@ -36,6 +36,7 @@ export const createProject = async (req, res) => {
     empresa_usuario,
     sede_responsable,
     sede_usuario,
+    equipo_trabajo,
   } = req.body;
 
   try {
@@ -61,6 +62,7 @@ export const createProject = async (req, res) => {
       .input("empresa_usuario", sql.VarChar, empresa_usuario)
       .input("sede_responsable", sql.VarChar, sede_responsable)
       .input("sede_usuario", sql.VarChar, sede_usuario)
+      .input("equipo_trabajo", sql.VarChar, equipo_trabajo)
       .query(queries.addProject);
     res.json({
       modelo,
@@ -82,6 +84,7 @@ export const createProject = async (req, res) => {
       empresa_usuario,
       sede_responsable,
       sede_usuario,
+      equipo_trabajo,
     });
   } catch (error) {
     res.status(500);
@@ -145,6 +148,7 @@ export const updateProject = async (req, res) => {
     empresa_usuario,
     sede_responsable,
     sede_usuario,
+    equipo_trabajo,
   } = req.body;
   try {
     const pool = await getConnection();
@@ -170,6 +174,7 @@ export const updateProject = async (req, res) => {
       .input("empresa_usuario", sql.VarChar, empresa_usuario)
       .input("sede_responsable", sql.VarChar, sede_responsable)
       .input("sede_usuario", sql.VarChar, sede_usuario)
+      .input("equipo_trabajo", sql.VarChar, equipo_trabajo)
       .query(queries.updateProject);
     res.json({
       id,
@@ -192,6 +197,7 @@ export const updateProject = async (req, res) => {
       empresa_usuario,
       sede_responsable,
       sede_usuario,
+      equipo_trabajo,
     });
   } catch (error) {
     res.status(500);

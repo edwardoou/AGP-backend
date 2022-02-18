@@ -14,8 +14,8 @@ export const queries = {
   getAllProjects: "SELECT * FROM [agpdb].[agpdb].[projects]",
   addProject:
     "INSERT INTO [agpdb].[agpdb].[projects]" +
-    "(modelo,nombre,responsable_id,prioridad,tipo,responsabilidad,descripcion,costo,archivo,fecha_identificacion,fecha_inicio,fecha_cierre,estado,area_responsable,area_usuario,empresa_usuario,empresa_responsable,sede_usuario,sede_responsable) values" +
-    "(@modelo,@nombre,@responsable_id,@prioridad,@tipo,@responsabilidad,@descripcion,@costo,@archivo,@fecha_identificacion,@fecha_inicio,@fecha_cierre,@estado,@area_responsable,@area_usuario,@empresa_usuario,@empresa_responsable,@sede_usuario,@sede_responsable)",
+    "(modelo,nombre,responsable_id,prioridad,tipo,responsabilidad,descripcion,costo,archivo,fecha_identificacion,fecha_inicio,fecha_cierre,estado,area_responsable,area_usuario,empresa_usuario,empresa_responsable,sede_usuario,sede_responsable,equipo_trabajo) values" +
+    "(@modelo,@nombre,@responsable_id,@prioridad,@tipo,@responsabilidad,@descripcion,@costo,@archivo,@fecha_identificacion,@fecha_inicio,@fecha_cierre,@estado,@area_responsable,@area_usuario,@empresa_usuario,@empresa_responsable,@sede_usuario,@sede_responsable,@equipo_trabajo)",
   getProjectsById:
     "SELECT * FROM [agpdb].[agpdb].[projects] WHERE idprojects = @idprojects",
   deleteProjectById:
@@ -23,7 +23,7 @@ export const queries = {
   updateProject:
     "UPDATE [agpdb].[agpdb].[projects] SET " +
     "modelo = @modelo ,nombre = @nombre ,responsable_id = @responsable_id ,prioridad=@prioridad,tipo = @tipo,responsabilidad = @responsabilidad,descripcion =@descripcion, costo=@costo,archivo=@archivo," +
-    "fecha_identificacion=@fecha_identificacion,fecha_inicio=@fecha_inicio,fecha_cierre=@fecha_cierre,estado=@estado,area_responsable=@area_responsable,area_usuario=@area_usuario, empresa_responsable=@empresa_responsable,empresa_usuario=@empresa_usuario,sede_usuario=@sede_usuario,sede_responsable=@sede_responsable " +
+    "fecha_identificacion=@fecha_identificacion,fecha_inicio=@fecha_inicio,fecha_cierre=@fecha_cierre,estado=@estado,area_responsable=@area_responsable,area_usuario=@area_usuario, empresa_responsable=@empresa_responsable,empresa_usuario=@empresa_usuario,sede_usuario=@sede_usuario,sede_responsable=@sede_responsable,equipo_trabajo=@equipo_trabajo " +
     "WHERE idprojects = @idprojects",
   //Acciones
   getAllAcciones: "SELECT * FROM [agpdb].[agpdb].[acciones]",
