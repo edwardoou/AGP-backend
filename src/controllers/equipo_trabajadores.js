@@ -1,7 +1,7 @@
 import { getConnection, sql, queries } from "../database";
 
 //GET
-export const getTrabajadores = async (req, res) => {
+export const getEquipo = async (req, res) => {
   try {
     //llamar a la conexion
     const pool = await getConnection();
@@ -17,56 +17,18 @@ export const getTrabajadores = async (req, res) => {
 
 //POST
 export const createTrabajador = async (req, res) => {
-  const {
-    foto,
-    nombre,
-    telefono,
-    direccion,
-    observacion,
-    sexo,
-    fecha_nacimiento,
-    fecha_ingreso,
-    fecha_cese,
-    categoria,
-    sede,
-    area,
-    puesto,
-  } = req.body;
+  const { nombre, telefono, direccion, observaciones } = req.body;
 
   try {
     const pool = await getConnection();
     await pool
       .request()
-      .input("foto", sql.VarChar, foto)
       .input("nombre", sql.VarChar, nombre)
       .input("telefono", sql.VarChar, telefono)
       .input("direccion", sql.VarChar, direccion)
-      .input("observacion", sql.VarChar, observacion)
-      .input("sexo", sql.VarChar, sexo)
-      .input("fecha_nacimiento", sql.Date, fecha_nacimiento)
-      .input("fecha_ingreso", sql.Date, fecha_ingreso)
-      .input("fecha_cese", sql.Date, fecha_cese)
-      .input("categoria", sql.VarChar, categoria)
-      .input("sede", sql.VarChar, sede)
-      .input("empresa", sql.VarChar, empresa)
-      .input("area", sql.VarChar, area)
-      .input("puesto", sql.VarChar, puesto)
-      .execute("agpdb.addTrabajadores")
-    res.json({
-      foto,
-      nombre,
-      telefono,
-      direccion,
-      observacion,
-      sexo,
-      fecha_nacimiento,
-      fecha_ingreso,
-      fecha_cese,
-      categoria,
-      sede,
-      area,
-      puesto,
-    });
+      .input("observaciones", sql.Text, observaciones)
+      .query(queries.addTrabajador);
+    res.json({ nombre, telefono, direccion, observaciones });
   } catch (error) {
     res.status(500);
     res.send(error.message);
@@ -99,7 +61,7 @@ export const deleteTrabajador = async (req, res) => {
     await pool
       .request()
       .input("idtrabajadores", id)
-      .execute("agp.deleteTrabajadores");
+      .query(queries.deleteTrabajadorById);
     res.sendStatus(204);
   } catch (error) {
     res.status(500);
@@ -123,57 +85,18 @@ export const getCountTrabajadores = async (req, res) => {
 //UPDATE
 export const updateTrabajador = async (req, res) => {
   const { id } = req.params;
-  const {
-    foto,
-    nombre,
-    telefono,
-    direccion,
-    observacion,
-    sexo,
-    fecha_nacimiento,
-    fecha_ingreso,
-    fecha_cese,
-    categoria,
-    sede,
-    area,
-    puesto,
-  } = req.body;
+  const { nombre, telefono, direccion, observaciones } = req.body;
   try {
     const pool = await getConnection();
     await pool
       .request()
       .input("idtrabajadores", id)
-      .input("foto", sql.VarChar, foto)
       .input("nombre", sql.VarChar, nombre)
       .input("telefono", sql.VarChar, telefono)
       .input("direccion", sql.VarChar, direccion)
-      .input("observacion", sql.VarChar, observacion)
-      .input("sexo", sql.VarChar, sexo)
-      .input("fecha_nacimiento", sql.Date, fecha_nacimiento)
-      .input("fecha_ingreso", sql.Date, fecha_ingreso)
-      .input("fecha_cese", sql.Date, fecha_cese)
-      .input("categoria", sql.VarChar, categoria)
-      .input("sede", sql.VarChar, sede)
-      .input("empresa", sql.VarChar, empresa)
-      .input("area", sql.VarChar, area)
-      .input("puesto", sql.VarChar, puesto)
-      .execute("agpdb.updateTrabajadores");
-    res.json({
-      id,
-      foto,
-      nombre,
-      telefono,
-      direccion,
-      observacion,
-      sexo,
-      fecha_nacimiento,
-      fecha_ingreso,
-      fecha_cese,
-      categoria,
-      sede,
-      area,
-      puesto,
-    });
+      .input("observaciones", sql.Text, observaciones)
+      .query(queries.updateTrabajador);
+    res.json({ id, nombre, telefono, direccion, observaciones });
   } catch (error) {
     res.status(500);
     res.send(error.message);

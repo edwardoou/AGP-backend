@@ -53,4 +53,15 @@ export const queries = {
     "UPDATE [agpdb].[agpdb].[actividades] SET " +
     "nombre=@nombre, responsable_id=@responsable_id, responsabilidad=@responsabilidad,descripcion=@descripcion, archivo=@archivo,fecha_limite=@fecha_limite, estado=@estado, projects_id=@projects_id " +
     "WHERE idactividades = @idactividades",
+  //Equipo de Trabajo
+  getAllEquipo: "SELECT * FROM [agpdb].[agpdb].[equipo_trabajo]",
+  addEquipo:
+    "INSERT INTO [agpdb].[agpdb].[equipo_trabajo] (nombre,telefono,direccion,observaciones) values(@nombre,@telefono,@direccion,@observaciones)",
+  getTrabajadoresById:
+    "SELECT * FROM [agpdb].[agpdb].[equipo_trabajo] WHERE idtrabajadores = @idtrabajadores",
+  deleteTrabajadorById:
+    "DELETE FROM [agpdb].[agpdb].[equipo_trabajo] WHERE idtrabajadores= @idtrabajadores",
+  getCountTrabajadores: "SELECT COUNT(*) FROM [agpdb].[agpdb].[equipo_trabajo]",
+  updateTrabajador:
+    "UPDATE [agpdb].[agpdb].[equipo_trabajo] SET WHERE idtrabajadores = @idtrabajadores",
 };
