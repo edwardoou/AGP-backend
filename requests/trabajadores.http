@@ -14,7 +14,7 @@ Content-Type: application/json
     "fecha_nacimiento": "2022-02-20",
     "fecha_ingreso": "2022-02-20",
     "fecha_cese": "2022-02-20",
-    "categoria": "2022-02-20",
+    "categoria": "Empleado",
     "sede": "precor",
     "area": "innovacion",
     "puesto": "pasante"
@@ -24,7 +24,7 @@ Content-Type: application/json
 GET {{api}}/2
 
 ### delete product 
-DELETE {{api}}/2
+DELETE {{api}}/6
 
 ### get count
 GET {{api}}/count
@@ -43,7 +43,7 @@ Content-Type: application/json
     "fecha_nacimiento": "2022-02-20",
     "fecha_ingreso": "2022-02-20",
     "fecha_cese": "2022-02-20",
-    "categoria": "2022-02-20",
+    "categoria": "Empleado",
     "sede": "precor",
     "area": "innovacion",
     "puesto": "pasante"

@@ -1,4 +1,4 @@
-import { getConnection, sql, queries } from "../database";
+import { getConnection, sql } from "../database";
 
 //GET
 export const getProjects = async (req, res) => {
@@ -6,7 +6,7 @@ export const getProjects = async (req, res) => {
     //llamar a la conexion
     const pool = await getConnection();
     //peticion a la db
-    const result = await pool.request().query(queries.getAllProjects);
+    const result = await pool.request().execute("agpdb.getAllProjects");
     res.json(result.recordset);
   } catch (error) {
     res.status(500);
@@ -63,7 +63,7 @@ export const createProject = async (req, res) => {
       .input("sede_responsable", sql.VarChar, sede_responsable)
       .input("sede_usuario", sql.VarChar, sede_usuario)
       .input("equipo_trabajo", sql.VarChar, equipo_trabajo)
-      .query(queries.addProject);
+      .execute("agpdb.addProjects");
     res.json({
       modelo,
       nombre,
@@ -100,7 +100,7 @@ export const getProjectById = async (req, res) => {
     const result = await pool
       .request()
       .input("idprojects", id)
-      .query(queries.getProjectsById);
+      .execute("agpdb.getByIdProjects");
     res.json(result.recordset[0]);
   } catch (error) {
     res.status(500);
@@ -117,7 +117,7 @@ export const deleteProject = async (req, res) => {
     await pool
       .request()
       .input("idprojects", id)
-      .query(queries.deleteProjectById);
+      .execute("agpdb.deleteProjects");
     res.sendStatus(204);
   } catch (error) {
     res.status(500);
@@ -175,7 +175,7 @@ export const updateProject = async (req, res) => {
       .input("sede_responsable", sql.VarChar, sede_responsable)
       .input("sede_usuario", sql.VarChar, sede_usuario)
       .input("equipo_trabajo", sql.VarChar, equipo_trabajo)
-      .query(queries.updateProject);
+      .execute("agpdb.updateProjects");
     res.json({
       id,
       modelo,

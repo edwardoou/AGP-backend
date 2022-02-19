@@ -17,13 +17,13 @@ Content-Type: application/json
 }
 
 ### get by id
-GET {{api}}/9
+GET {{api}}/2
 
 ### delete product 
-DELETE {{api}}/8
+DELETE {{api}}/1
 
 ### update
-PUT {{api}}/9
+PUT {{api}}/3
 Content-Type: application/json
 
 {

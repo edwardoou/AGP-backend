@@ -1,10 +1,10 @@
-import { getConnection, sql, queries } from "../database";
+import { getConnection, sql } from "../database";
 
 //GET
 export const getAcciones = async (req, res) => {
   try {
     const pool = await getConnection();
-    const result = await pool.request().query(queries.getAllAcciones);
+    const result = await pool.request().execute("agpdb.getAllAcciones");
     res.json(result.recordset);
   } catch (error) {
     res.status(500);
@@ -39,7 +39,7 @@ export const createAccion = async (req, res) => {
       .input("fecha_limite", sql.Date, fecha_limite)
       .input("estado", sql.VarChar, estado)
       .input("projects_id", sql.Int, projects_id)
-      .query(queries.addAccion);
+      .execute("agpdb.addAcciones");
     res.json({
       nombre,
       tipo,
@@ -65,7 +65,7 @@ export const getAccionById = async (req, res) => {
     const result = await pool
       .request()
       .input("idacciones", id)
-      .query(queries.getAccionesById);
+      .execute("agpdb.getByIdAcciones");
     res.json(result.recordset[0]);
   } catch (error) {
     res.status(500);
@@ -81,7 +81,7 @@ export const deleteAccion = async (req, res) => {
     await pool
       .request()
       .input("idacciones", id)
-      .query(queries.deleteAccionesById);
+      .execute("agpdb.deleteAcciones");
     res.sendStatus(204);
   } catch (error) {
     res.status(500);
@@ -117,7 +117,7 @@ export const updateAccion = async (req, res) => {
       .input("fecha_limite", sql.Date, fecha_limite)
       .input("estado", sql.VarChar, estado)
       .input("projects_id", sql.Int, projects_id)
-      .query(queries.updateAccion);
+      .execute("agpdb.updateAcciones");
     res.json({
       id,
       nombre,
