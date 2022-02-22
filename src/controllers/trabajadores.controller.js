@@ -81,7 +81,7 @@ export const getTrabajadorById = async (req, res) => {
       .request()
       //.input(name,value)
       .input("idtrabajadores", id)
-      .execute("agpdb.getTrabajadoresById");
+      .execute("agpdb.getByIdTrabajadores");
     //res.send y json son lo mismo, "json" convierte todo a json usando el send
     res.json(result.recordset[0]);
   } catch (error) {

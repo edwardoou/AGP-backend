@@ -18,6 +18,8 @@ Cross origin resource sharing (CORS) es un mecanismo basado en cabeceras http
 que permite a los servidores indicar a los navegadores si deben permitir la carga 
 de recursos para un origen distinto al suyo (dominio, esquema o puerto).
     "cors": "^2.8.5",
+Modulo para la subida de imagenes.
+    "multer": "^1.4.4"
 
 SCRIPTS:
 al ejecutar "npm run dev" ejecutara el siguiente comando ejecutando index.js haciendo uso de nodemon

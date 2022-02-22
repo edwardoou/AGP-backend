@@ -16,6 +16,8 @@ export const getProjects = async (req, res) => {
 
 //POST
 export const createProject = async (req, res) => {
+  let serverUrl = req.protocol + "://" + req.get("host");
+  /* console.log(req.file); */
   const {
     modelo,
     nombre,
@@ -25,7 +27,7 @@ export const createProject = async (req, res) => {
     responsabilidad,
     descripcion,
     costo,
-    archivo,
+    archivo = serverUrl + "/uploads/" + req.file.filename,
     fecha_identificacion,
     fecha_inicio,
     fecha_cierre,
