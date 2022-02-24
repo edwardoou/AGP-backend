@@ -130,7 +130,7 @@ export const deleteProject = async (req, res) => {
 //UPDATE
 export const updateProject = async (req, res) => {
   let serverUrl = req.protocol + "://" + req.get("host");
-  console.log(req.file);
+  /* console.log(req.file); */
   const { id } = req.params;
   const {
     modelo,

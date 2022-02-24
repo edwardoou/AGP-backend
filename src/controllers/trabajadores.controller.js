@@ -18,7 +18,7 @@ export const getTrabajadores = async (req, res) => {
 //POST
 export const createTrabajador = async (req, res) => {
   let serverUrl = req.protocol + "://" + req.get("host");
-  console.log(req.file);
+  /* console.log(req.file); */
   const {
     foto = serverUrl + "/uploads/" + req.file.filename,
     nombre,
@@ -48,7 +48,7 @@ export const createTrabajador = async (req, res) => {
       .input("sexo", sql.VarChar, sexo)
       .input("fecha_nacimiento", sql.Date, fecha_nacimiento)
       .input("fecha_ingreso", sql.Date, fecha_ingreso)
-      .input("fecha_cese", sql.Date, fecha_cese)
+      .input("fecha_cese", fecha_cese)
       .input("categoria", sql.VarChar, categoria)
       .input("sede", sql.VarChar, sede)
       .input("area", sql.VarChar, area)
@@ -127,7 +127,7 @@ export const getCountTrabajadores = async (req, res) => {
 //UPDATE
 export const updateTrabajador = async (req, res) => {
   let serverUrl = req.protocol + "://" + req.get("host");
-  console.log(req.file);
+  /* console.log(req.file); */
   const { id } = req.params;
   const {
     foto = serverUrl + "/uploads/" + req.file.filename,
@@ -158,7 +158,7 @@ export const updateTrabajador = async (req, res) => {
       .input("sexo", sql.VarChar, sexo)
       .input("fecha_nacimiento", sql.Date, fecha_nacimiento)
       .input("fecha_ingreso", sql.Date, fecha_ingreso)
-      .input("fecha_cese", sql.Date, fecha_cese)
+      .input("fecha_cese", fecha_cese)
       .input("categoria", sql.VarChar, categoria)
       .input("sede", sql.VarChar, sede)
       .input("area", sql.VarChar, area)
