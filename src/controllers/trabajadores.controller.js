@@ -1,4 +1,4 @@
-import { getConnection, sql} from "../database";
+import { getConnection, sql } from "../database";
 
 //GET
 export const getTrabajadores = async (req, res) => {
@@ -17,8 +17,10 @@ export const getTrabajadores = async (req, res) => {
 
 //POST
 export const createTrabajador = async (req, res) => {
+  let serverUrl = req.protocol + "://" + req.get("host");
+  console.log(req.file);
   const {
-    foto,
+    foto = serverUrl + "/uploads/" + req.file.filename,
     nombre,
     telefono,
     direccion,
@@ -31,6 +33,7 @@ export const createTrabajador = async (req, res) => {
     sede,
     area,
     puesto,
+    empresa,
   } = req.body;
 
   try {
@@ -50,6 +53,7 @@ export const createTrabajador = async (req, res) => {
       .input("sede", sql.VarChar, sede)
       .input("area", sql.VarChar, area)
       .input("puesto", sql.VarChar, puesto)
+      .input("empresa", sql.VarChar, empresa)
       .execute("agpdb.addTrabajadores");
     res.json({
       foto,
@@ -65,6 +69,7 @@ export const createTrabajador = async (req, res) => {
       sede,
       area,
       puesto,
+      empresa,
     });
   } catch (error) {
     res.status(500);
@@ -121,9 +126,11 @@ export const getCountTrabajadores = async (req, res) => {
 
 //UPDATE
 export const updateTrabajador = async (req, res) => {
+  let serverUrl = req.protocol + "://" + req.get("host");
+  console.log(req.file);
   const { id } = req.params;
   const {
-    foto,
+    foto = serverUrl + "/uploads/" + req.file.filename,
     nombre,
     telefono,
     direccion,
@@ -136,6 +143,7 @@ export const updateTrabajador = async (req, res) => {
     sede,
     area,
     puesto,
+    empresa,
   } = req.body;
   try {
     const pool = await getConnection();
@@ -155,6 +163,7 @@ export const updateTrabajador = async (req, res) => {
       .input("sede", sql.VarChar, sede)
       .input("area", sql.VarChar, area)
       .input("puesto", sql.VarChar, puesto)
+      .input("empresa", sql.VarChar, empresa)
       .execute("agpdb.updateTrabajadores");
     res.json({
       id,
@@ -171,6 +180,7 @@ export const updateTrabajador = async (req, res) => {
       sede,
       area,
       puesto,
+      empresa,
     });
   } catch (error) {
     res.status(500);

@@ -15,9 +15,10 @@ Content-Type: application/json
     "fecha_ingreso": "2022-02-20",
     "fecha_cese": "2022-02-20",
     "categoria": "Empleado",
-    "sede": "precor",
+    "sede": "planta este",
     "area": "innovacion",
-    "puesto": "pasante"
+    "puesto": "pasante",
+    "empresa": "precor"
 }
 
 ### get by id
@@ -44,7 +45,7 @@ Content-Type: application/json
     "fecha_ingreso": "2022-02-20",
     "fecha_cese": "2022-02-20",
     "categoria": "Empleado",
-    "sede": "precor",
+    "sede": "oeste",
     "area": "innovacion",
     "puesto": "pasante"
 }

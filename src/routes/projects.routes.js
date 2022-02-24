@@ -37,6 +37,6 @@ router.get("/projects/:id", getProjectById);
 router.delete("/projects/:id", deleteProject);
 
 //PUT
-router.put("/projects/:id", updateProject);
+router.put("/projects/:id", upload.single("archivo"), updateProject);
 
 export default router;

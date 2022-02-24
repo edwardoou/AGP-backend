@@ -129,6 +129,8 @@ export const deleteProject = async (req, res) => {
 
 //UPDATE
 export const updateProject = async (req, res) => {
+  let serverUrl = req.protocol + "://" + req.get("host");
+  console.log(req.file);
   const { id } = req.params;
   const {
     modelo,
@@ -139,7 +141,7 @@ export const updateProject = async (req, res) => {
     responsabilidad,
     descripcion,
     costo,
-    archivo,
+    archivo = serverUrl + "/uploads/" + req.file.filename,
     fecha_identificacion,
     fecha_inicio,
     fecha_cierre,
