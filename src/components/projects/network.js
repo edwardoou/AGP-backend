@@ -1,16 +1,11 @@
 import { Router } from "express";
-import {
-  createProject,
-  getProjects,
-  getProjectById,
-  deleteProject,
-  updateProject,
-} from "../controllers/projects.controller";
+import * as controller from "./controller";
 
 const path = require("path");
 const DIR = "./uploads/";
 import { v4 as uuidv4 } from "uuid";
 
+/* --- MULTER START --- */
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -21,22 +16,25 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
+/* --- MULTER END --- */
 
 const router = Router();
 
 //GET
-router.get("/projects", getProjects);
+router.route("/").get(controller.getProjects);
 
 //POST
-router.post("/projects", upload.single("archivo"), createProject);
+router.route("/").post(upload.single("archivo"), controller.createProject);
 
 // GET BY ID
-router.get("/projects/:id", getProjectById);
+router.route("/show/:id").get(controller.getProjectById);
 
 //DELETE
-router.delete("/projects/:id", deleteProject);
+router.route("/delete/:id").delete(controller.deleteProject);
 
 //PUT
-router.put("/projects/:id", upload.single("archivo"), updateProject);
+router
+  .route("/update/:id")
+  .put(upload.single("archivo"), controller.updateProject);
 
 export default router;

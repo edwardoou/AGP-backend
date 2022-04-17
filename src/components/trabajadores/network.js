@@ -1,12 +1,5 @@
 import { Router } from "express";
-import {
-  createTrabajador,
-  getTrabajadores,
-  getTrabajadorById,
-  deleteTrabajador,
-  getCountTrabajadores,
-  updateTrabajador,
-} from "../controllers/trabajadores.controller";
+import * as controller from "./controller";
 
 const path = require("path");
 const DIR = "./uploads/";
@@ -25,22 +18,26 @@ const upload = multer({ storage: storage });
 
 const router = Router();
 
+//*RUTAS
+
 //GET
-router.get("/trabajadores", getTrabajadores);
+router.route("/").get(controller.getTrabajadores);
 
 //POST
-router.post("/trabajadores", upload.single("foto"), createTrabajador);
+router.route("/").post(upload.single("foto"), controller.createTrabajador);
 
 //TOTAL, las urls tipo string deben ir antes de la de tipo int.
-router.get("/trabajadores/count", getCountTrabajadores);
+router.route("/count").get(controller.getCountTrabajadores);
 
 // GET BY ID
-router.get("/trabajadores/:id", getTrabajadorById);
+router.route("/show/:id").get(controller.getTrabajadorById);
 
 //DELETE
-router.delete("/trabajadores/:id", deleteTrabajador);
+router.route("/delete/:id").delete(controller.deleteTrabajador);
 
 //PUT
-router.put("/trabajadores/:id", upload.single("foto"), updateTrabajador);
+router
+  .route("/update/:id")
+  .put(upload.single("foto"), controller.updateTrabajador);
 
 export default router;

@@ -2,11 +2,14 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import config from "./config";
-import projectsRoutes from "./routes/projects.routes";
-import trabajadoresRoutes from "./routes/trabajadores.routes";
-import accionesRoutes from "./routes/acciones.routes";
-import actividadesRoutes from "./routes/actividades.routes";
-import routerTest from "./controllers/test.constroller";
+
+import {
+  acciones,
+  actividades,
+  projects,
+  trabajadores,
+  equipo_trabajadores,
+} from "./components";
 
 // objecto 'app' para config. express
 const app = express();
@@ -25,10 +28,10 @@ app.use("/uploads", express.static("uploads"));
 app.use(cors());
 
 //* rutas
-app.use(projectsRoutes);
-app.use(trabajadoresRoutes);
-app.use(accionesRoutes);
-app.use(actividadesRoutes);
-app.use(routerTest);
+app.use("/acciones", acciones);
+app.use("/projects", projects);
+app.use("/trabajadores", trabajadores);
+app.use("/actividades", actividades);
+app.use("/test", equipo_trabajadores);
 
 export default app;
