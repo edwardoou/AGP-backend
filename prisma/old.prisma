@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model PROJECT {
+  id                   Int              @id @default(autoincrement())
+  modelo               String           @db.NVarChar(20)
+  nombre               String           @db.NVarChar(100)
+  prioridad            String           @db.NVarChar(10)
+  tipo                 String           @db.NVarChar(20)
+  responsabilidad      String           @db.NVarChar(20)
+  descripcion          String           @db.NVarChar(500)
+  costo                Decimal          @db.Decimal(10, 2)
+  archivo              String           @db.NVarChar(200)
+  fecha_identificacion DateTime         @db.Date
+  fecha_inicio         DateTime         @db.Date
+  fecha_cierre         DateTime         @db.Date
+  estado               String           @db.NVarChar(20)
+  area_responsable     String           @db.NVarChar(80)
+  area_usuario         String           @db.NVarChar(80)
+  empresa_responsable  String           @db.NVarChar(15)
+  empresa_usuario      String           @db.NVarChar(15)
+  sede_responsable     String           @db.NVarChar(10)
+  sede_usuario         String           @db.NVarChar(10)
+  responsable_id       Int?
+  TRABAJADORES         TRABAJADOR?      @relation(fields: [responsable_id], references: [id])
+  ACCIONES             ACCION[]
+  ACTIVIDADES          ACTIVIDAD[]
+  EQUIPO_TRABAJADORES  EQUIPO_TRABAJO[]
+}
+
+model TRABAJADOR {
+  id               Int              @id @default(autoincrement())
+  foto             String           @db.NVarChar(100)
+  nombre           String           @db.NVarChar(100)
+  telefono         String           @db.NVarChar(15)
+  direccion        String           @db.NVarChar(100)
+  observacion      String           @db.NVarChar(500)
+  sexo             String           @db.NVarChar(10)
+  fecha_nacimiento DateTime         @db.Date
+  fecha_ingreso    DateTime         @db.Date
+  fecha_cese       DateTime         @db.Date
+  categoria        String           @db.NVarChar(100)
+  sede             String           @db.NVarChar(45)
+  area             String           @db.NVarChar(80)
+  puesto           String           @db.NVarChar(100)
+  empresa          String           @db.NVarChar(15)
+  ACTIVIDADES      ACTIVIDAD?
+  ACCIONES         ACCION?
+  PROJECTS         PROJECT[]
+  EQUIPO_PROJECTS  EQUIPO_TRABAJO[]
+}
+
+model EQUIPO_TRABAJO {
+  trabajador    TRABAJADOR @relation(fields: [trabajador_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  trabajador_id Int
+  project       PROJECT    @relation(fields: [project_id], references: [id])
+  project_id    Int
+
+  @@id([trabajador_id, project_id])
+}
+
+model ACCION {
+  id             Int        @id @default(autoincrement())
+  nombre         String     @db.NVarChar(100)
+  tipo           String     @db.NVarChar(20)
+  asistencia     String     @db.NVarChar(50)
+  descripcion    String     @db.NVarChar(500)
+  archivo        String     @db.NVarChar(200)
+  fecha_limite   DateTime   @db.Date
+  estado         String     @db.NVarChar(100)
+  responsable_id Int        @unique
+  project_id     Int?
+  PROJECTS       PROJECT?   @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  TRABAJADORES   TRABAJADOR @relation(fields: [responsable_id], references: [id])
+}
+
+model ACTIVIDAD {
+  id              Int        @id @default(autoincrement())
+  nombre          String     @db.NVarChar(100)
+  responsabilidad String     @db.NVarChar(10)
+  descripcion     String     @db.NVarChar(500)
+  archivo         String     @db.NVarChar(200)
+  fecha_limite    DateTime   @db.Date
+  estado          String     @db.NVarChar(100)
+  responsable_id  Int        @unique
+  project_id      Int?
+  PROJECTS        PROJECT?   @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  TRABAJADORES    TRABAJADOR @relation(fields: [responsable_id], references: [id])
+}
