@@ -29,15 +29,13 @@ router.route("/").post(upload.single("foto"), controller.createTrabajador);
 //TOTAL, las urls tipo string deben ir antes de la de tipo int.
 router.route("/count").get(controller.getCountTrabajadores);
 
-// GET BY ID
-router.route("/show/:id").get(controller.getTrabajadorById);
+//GET BY ID
+router.route("/:id").get(controller.getTrabajadorById);
 
 //DELETE
-router.route("/delete/:id").delete(controller.deleteTrabajador);
+router.route("/:id").delete(controller.deleteTrabajador);
 
 //PUT
-router
-  .route("/update/:id")
-  .put(upload.single("foto"), controller.updateTrabajador);
+router.route("/:id").put(upload.single("foto"), controller.updateTrabajador);
 
 export default router;

@@ -1,189 +1,91 @@
-import { getConnection, sql } from "../../database";
+import { PrismaClient } from "@prisma/client";
 
-//GET
+const prisma = new PrismaClient();
+
+//*GET
 export const getTrabajadores = async (req, res) => {
   try {
-    //llamar a la conexion
-    const pool = await getConnection();
-    //peticion a la db
-    const result = await pool.request().execute("agpdb.getAllTrabajadores");
-    //retorna solo el recordset de la consulta
-    res.json(result.recordset);
+    const result = await prisma.trabajador.findMany();
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500);
-    res.send(error.message);
+    res.status(500).send(error.message);
   }
 };
 
-//POST
+//*POST
 export const createTrabajador = async (req, res) => {
-  let serverUrl = req.protocol + "://" + req.get("host");
-  /* console.log(req.file); */
-  const {
-    foto = serverUrl + "/uploads/" + req.file.filename,
-    nombre,
-    telefono,
-    direccion,
-    observacion,
-    sexo,
-    fecha_nacimiento,
-    fecha_ingreso,
-    fecha_cese,
-    categoria,
-    sede,
-    area,
-    puesto,
-    empresa,
-  } = req.body;
-
   try {
-    const pool = await getConnection();
-    await pool
-      .request()
-      .input("foto", sql.VarChar, foto)
-      .input("nombre", sql.VarChar, nombre)
-      .input("telefono", sql.VarChar, telefono)
-      .input("direccion", sql.VarChar, direccion)
-      .input("observacion", sql.VarChar, observacion)
-      .input("sexo", sql.VarChar, sexo)
-      .input("fecha_nacimiento", sql.Date, fecha_nacimiento)
-      .input("fecha_ingreso", sql.Date, fecha_ingreso)
-      .input("fecha_cese", fecha_cese)
-      .input("categoria", sql.VarChar, categoria)
-      .input("sede", sql.VarChar, sede)
-      .input("area", sql.VarChar, area)
-      .input("puesto", sql.VarChar, puesto)
-      .input("empresa", sql.VarChar, empresa)
-      .execute("agpdb.addTrabajadores");
-    res.json({
-      foto,
-      nombre,
-      telefono,
-      direccion,
-      observacion,
-      sexo,
-      fecha_nacimiento,
-      fecha_ingreso,
-      fecha_cese,
-      categoria,
-      sede,
-      area,
-      puesto,
-      empresa,
-    });
+    if (req.body.foto === null) {
+      req.body.foto;
+    } else {
+      //console.log(req.file);
+      let serverUrl = req.protocol + "://" + req.get("host");
+      req.body.foto = serverUrl + "/uploads/" + req.file.filename;
+    }
+    const result = await prisma.trabajador.create({ data: req.body });
+    res.status(201).json(result);
   } catch (error) {
-    res.status(500);
-    res.send(error.message);
+    res.status(500).send(error.message);
   }
 };
 
-//GET BY ID
+//*GET BY ID
 export const getTrabajadorById = async (req, res) => {
-  const { id } = req.params;
   try {
-    const pool = await getConnection();
-    const result = await pool
-      .request()
-      //.input(name,value)
-      .input("idtrabajadores", id)
-      .execute("agpdb.getByIdTrabajadores");
-    //res.send y json son lo mismo, "json" convierte todo a json usando el send
-    res.json(result.recordset[0]);
+    const { id } = req.params;
+    const result = await prisma.trabajador.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500);
-    res.send(error.message);
+    res.status(500).send(error.message);
   }
 };
 
-//DELETE
-export const deleteTrabajador = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const pool = await getConnection();
-    await pool
-      .request()
-      .input("idtrabajadores", id)
-      .execute("agpdb.deleteTrabajadores");
-    res.sendStatus(204);
-  } catch (error) {
-    res.status(500);
-    res.send(error.message);
-  }
-};
-
-//TOTAL
+//*TOTAL
 export const getCountTrabajadores = async (req, res) => {
   try {
-    const pool = await getConnection();
-    const result = await pool.request().execute("agpdb.getCountTrabajadores");
-    //retorna primer valor, luego el valor el String vacio
-    res.json(result.recordset[0][""]);
+    const result = await prisma.trabajador.count();
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500);
-    res.send(error.message);
+    res.status(500).send(error.message);
   }
 };
 
-//UPDATE
+//*UPDATE
 export const updateTrabajador = async (req, res) => {
-  let serverUrl = req.protocol + "://" + req.get("host");
-  /* console.log(req.file); */
-  const { id } = req.params;
-  const {
-    foto = serverUrl + "/uploads/" + req.file.filename,
-    nombre,
-    telefono,
-    direccion,
-    observacion,
-    sexo,
-    fecha_nacimiento,
-    fecha_ingreso,
-    fecha_cese,
-    categoria,
-    sede,
-    area,
-    puesto,
-    empresa,
-  } = req.body;
   try {
-    const pool = await getConnection();
-    await pool
-      .request()
-      .input("idtrabajadores", id)
-      .input("foto", sql.VarChar, foto)
-      .input("nombre", sql.VarChar, nombre)
-      .input("telefono", sql.VarChar, telefono)
-      .input("direccion", sql.VarChar, direccion)
-      .input("observacion", sql.VarChar, observacion)
-      .input("sexo", sql.VarChar, sexo)
-      .input("fecha_nacimiento", sql.Date, fecha_nacimiento)
-      .input("fecha_ingreso", sql.Date, fecha_ingreso)
-      .input("fecha_cese", fecha_cese)
-      .input("categoria", sql.VarChar, categoria)
-      .input("sede", sql.VarChar, sede)
-      .input("area", sql.VarChar, area)
-      .input("puesto", sql.VarChar, puesto)
-      .input("empresa", sql.VarChar, empresa)
-      .execute("agpdb.updateTrabajadores");
-    res.json({
-      id,
-      foto,
-      nombre,
-      telefono,
-      direccion,
-      observacion,
-      sexo,
-      fecha_nacimiento,
-      fecha_ingreso,
-      fecha_cese,
-      categoria,
-      sede,
-      area,
-      puesto,
-      empresa,
+    const { id } = req.params;
+    if (req.body.foto === null) {
+      req.body.foto;
+    } else {
+      //console.log(req.file);
+      let serverUrl = req.protocol + "://" + req.get("host");
+      req.body.foto = serverUrl + "/uploads/" + req.file.filename;
+    }
+    const result = await prisma.trabajador.update({
+      where: { id: Number(id) },
+      data: req.body,
     });
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500);
-    res.send(error.message);
+    res.status(500).send(error.message);
+  }
+};
+
+//*DELETE
+export const deleteTrabajador = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await prisma.trabajador.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+    res.status(204).json(result);
+  } catch (error) {
+    res.status(500).send(error.message);
   }
 };
