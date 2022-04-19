@@ -13,7 +13,7 @@ Content-Type: application/json
     "archivo": null,
     "fecha_limite": "2022-02-04T00:00:00.000Z",
     "estado": "asdasd",
-    "projects_id": 1
+    "project_id": 1
 }
 
 ### get by id
@@ -35,5 +35,5 @@ Content-Type: application/json
     "archivo": null,
     "fecha_limite": "2022-02-04T00:00:00.000Z",
     "estado": "asdasd",
-    "projects_id": 1
+    "project_id": 1
 }

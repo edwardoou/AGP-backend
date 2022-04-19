@@ -27,14 +27,12 @@ router.route("/").get(controller.getProjects);
 router.route("/").post(upload.single("archivo"), controller.createProject);
 
 // GET BY ID
-router.route("/show/:id").get(controller.getProjectById);
+router.route("/:id").get(controller.getProjectById);
 
 //DELETE
-router.route("/delete/:id").delete(controller.deleteProject);
+router.route("/:id").delete(controller.deleteProject);
 
 //PUT
-router
-  .route("/update/:id")
-  .put(upload.single("archivo"), controller.updateProject);
+router.route("/:id").put(upload.single("archivo"), controller.updateProject);
 
 export default router;

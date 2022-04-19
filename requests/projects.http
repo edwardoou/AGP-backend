@@ -23,12 +23,11 @@ Content-Type: application/json
     "empresa_responsable": "Maxco",
     "empresa_usuario": "Precor",
     "sede_responsable": "PLANTA",
-    "sede_usuario": "QUBO",
-    "equipo_trabajo":"1,2"
+    "sede_usuario": "QUBO"
 }
 
 ### get by id
-GET {{api}}/1
+GET {{api}}/2
 
 ### delete product 
 DELETE {{api}}/3
@@ -56,6 +55,5 @@ Content-Type: application/json
     "empresa_responsable": "Maxco",
     "empresa_usuario": "Precor",
     "sede_responsable": "PLANTA",
-    "sede_usuario": "QUBO",
-    "equipo_trabajo": "1,3"
+    "sede_usuario": "QUBO"
 }

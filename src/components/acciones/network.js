@@ -12,12 +12,12 @@ router.route("/").get(controller.getAcciones);
 router.route("/").post(controller.createAccion);
 
 // GET BY ID
-router.route("/show/:id").get(controller.getAccionById);
+router.route("/:id").get(controller.getAccionById);
 
 //DELETE
-router.route("/delete/:id").delete(controller.deleteAccion);
+router.route("/:id").delete(controller.deleteAccion);
 
 //PUT
-router.route("/update/:id").put(controller.updateAccion);
+router.route("/:id").put(controller.updateAccion);
 
 export default router;

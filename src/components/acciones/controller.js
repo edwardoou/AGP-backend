@@ -1,137 +1,67 @@
-import { getConnection, sql } from "../../database";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 //GET
 export const getAcciones = async (req, res) => {
   try {
-    const pool = await getConnection();
-    const result = await pool.request().execute("agpdb.getAllAcciones");
-    res.json(result.recordset);
+    const result = await prisma.accion.findMany();
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500);
-    res.send(error.message);
+    res.status(500).send(error.message);
   }
 };
 
 //POST
 export const createAccion = async (req, res) => {
-  const {
-    nombre,
-    tipo,
-    responsable_id,
-    asistencia,
-    descripcion,
-    archivo,
-    fecha_limite,
-    estado,
-    projects_id,
-  } = req.body;
-
   try {
-    const pool = await getConnection();
-    await pool
-      .request()
-      .input("nombre", sql.VarChar, nombre)
-      .input("tipo", sql.VarChar, tipo)
-      .input("responsable_id", sql.Int, responsable_id)
-      .input("asistencia", sql.VarChar, asistencia)
-      .input("descripcion", sql.VarChar, descripcion)
-      .input("archivo", sql.VarChar, archivo)
-      .input("fecha_limite", sql.Date, fecha_limite)
-      .input("estado", sql.VarChar, estado)
-      .input("projects_id", sql.Int, projects_id)
-      .execute("agpdb.addAcciones");
-    res.json({
-      nombre,
-      tipo,
-      responsable_id,
-      asistencia,
-      descripcion,
-      archivo,
-      fecha_limite,
-      estado,
-      projects_id,
-    });
+    const result = await prisma.accion.create({ data: req.body });
+    res.status(201).json(result);
   } catch (error) {
-    res.status(500);
-    res.send(error.message);
+    res.status(500).send(error.message);
   }
 };
 
 //GET BY ID
 export const getAccionById = async (req, res) => {
-  const { id } = req.params;
   try {
-    const pool = await getConnection();
-    const result = await pool
-      .request()
-      .input("idacciones", id)
-      .execute("agpdb.getByIdAcciones");
-    res.json(result.recordset[0]);
+    const { id } = req.params;
+    const result = await prisma.accion.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500);
-    res.send(error.message);
+    res.status(500).send(error.message);
   }
 };
 
 //DELETE
 export const deleteAccion = async (req, res) => {
-  const { id } = req.params;
   try {
-    const pool = await getConnection();
-    await pool
-      .request()
-      .input("idacciones", id)
-      .execute("agpdb.deleteAcciones");
-    res.sendStatus(204);
+    const { id } = req.params;
+    const result = await prisma.accion.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+    res.status(204).json(result);
   } catch (error) {
-    res.status(500);
-    res.send(error.message);
+    res.status(500).send(error.message);
   }
 };
 
 //UPDATE
 export const updateAccion = async (req, res) => {
-  const { id } = req.params;
-  const {
-    nombre,
-    tipo,
-    responsable_id,
-    asistencia,
-    descripcion,
-    archivo,
-    fecha_limite,
-    estado,
-    projects_id,
-  } = req.body;
   try {
-    const pool = await getConnection();
-    await pool
-      .request()
-      .input("idacciones", id)
-      .input("nombre", sql.VarChar, nombre)
-      .input("tipo", sql.VarChar, tipo)
-      .input("responsable_id", sql.Int, responsable_id)
-      .input("asistencia", sql.VarChar, asistencia)
-      .input("descripcion", sql.VarChar, descripcion)
-      .input("archivo", sql.VarChar, archivo)
-      .input("fecha_limite", sql.Date, fecha_limite)
-      .input("estado", sql.VarChar, estado)
-      .input("projects_id", sql.Int, projects_id)
-      .execute("agpdb.updateAcciones");
-    res.json({
-      id,
-      nombre,
-      tipo,
-      responsable_id,
-      asistencia,
-      descripcion,
-      archivo,
-      fecha_limite,
-      estado,
-      projects_id,
+    const { id } = req.params;
+    const result = await prisma.accion.update({
+      where: { id: Number(id) },
+      data: req.body,
     });
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500);
-    res.send(error.message);
+    res.status(500).send(error.message);
   }
 };

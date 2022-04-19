@@ -15,7 +15,7 @@ export const getTrabajadores = async (req, res) => {
 //*POST
 export const createTrabajador = async (req, res) => {
   try {
-    if (req.body.foto === null) {
+    if (!req.body.foto) {
       req.body.foto;
     } else {
       //console.log(req.file);
@@ -58,7 +58,7 @@ export const getCountTrabajadores = async (req, res) => {
 export const updateTrabajador = async (req, res) => {
   try {
     const { id } = req.params;
-    if (req.body.foto === null) {
+    if (!req.body.foto) {
       req.body.foto;
     } else {
       //console.log(req.file);

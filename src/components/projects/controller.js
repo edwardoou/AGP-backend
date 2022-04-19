@@ -1,210 +1,94 @@
-import { getConnection, sql } from "../../database";
+import { PrismaClient } from "@prisma/client";
 
-//GET
+const prisma = new PrismaClient();
+
+//*GET
 export const getProjects = async (req, res) => {
   try {
-    //llamar a la conexion
-    const pool = await getConnection();
-    //peticion a la db
-    const result = await pool.request().execute("agpdb.getAllProjects");
-    res.json(result.recordset);
+    const result = await prisma.project.findMany({
+      include: { equipo_trabajadores: true },
+    });
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500);
-    res.send(error.message);
+    res.status(500).send(error.message);
   }
 };
 
-//POST
+// TODO: Generar una condicional en caso no exista el id de la foreign key(para acciones, trabajadores, equipo_trabajadores y projects)
+
+//TODO: Pensar como debe ingresar los ids para trabajador https://www.google.com/search?q=add+many+to+many+prisma&oq=add+many+to+many+prisma&aqs=chrome..69i57.3001j0j1&sourceid=chrome&ie=UTF-8
+//*POST
 export const createProject = async (req, res) => {
-  let serverUrl = req.protocol + "://" + req.get("host");
-  /* console.log(req.file); */
-  const {
-    modelo,
-    nombre,
-    responsable_id,
-    prioridad,
-    tipo,
-    responsabilidad,
-    descripcion,
-    costo,
-    archivo = serverUrl + "/uploads/" + req.file.filename,
-    fecha_identificacion,
-    fecha_inicio,
-    fecha_cierre,
-    estado,
-    area_responsable,
-    area_usuario,
-    empresa_responsable,
-    empresa_usuario,
-    sede_responsable,
-    sede_usuario,
-    equipo_trabajo,
-  } = req.body;
-
   try {
-    const pool = await getConnection();
-    await pool
-      .request()
-      .input("modelo", sql.VarChar, modelo)
-      .input("nombre", sql.VarChar, nombre)
-      .input("responsable_id", sql.Int, responsable_id)
-      .input("prioridad", sql.VarChar, prioridad)
-      .input("tipo", sql.VarChar, tipo)
-      .input("responsabilidad", sql.VarChar, responsabilidad)
-      .input("descripcion", sql.VarChar, descripcion)
-      .input("costo", sql.Decimal, costo)
-      .input("archivo", sql.VarChar, archivo)
-      .input("fecha_identificacion", sql.Date, fecha_identificacion)
-      .input("fecha_inicio", sql.Date, fecha_inicio)
-      .input("fecha_cierre", sql.Date, fecha_cierre)
-      .input("estado", sql.VarChar, estado)
-      .input("area_responsable", sql.VarChar, area_responsable)
-      .input("area_usuario", sql.VarChar, area_usuario)
-      .input("empresa_responsable", sql.VarChar, empresa_responsable)
-      .input("empresa_usuario", sql.VarChar, empresa_usuario)
-      .input("sede_responsable", sql.VarChar, sede_responsable)
-      .input("sede_usuario", sql.VarChar, sede_usuario)
-      .input("equipo_trabajo", sql.VarChar, equipo_trabajo)
-      .execute("agpdb.addProjects");
-    res.json({
-      modelo,
-      nombre,
-      responsable_id,
-      prioridad,
-      tipo,
-      responsabilidad,
-      descripcion,
-      costo,
-      archivo,
-      fecha_identificacion,
-      fecha_inicio,
-      fecha_cierre,
-      estado,
-      area_responsable,
-      area_usuario,
-      empresa_responsable,
-      empresa_usuario,
-      sede_responsable,
-      sede_usuario,
-      equipo_trabajo,
+    if (!req.body.archivo) {
+      req.body.archivo;
+    } else {
+      //console.log(req.file);
+      let serverUrl = req.protocol + "://" + req.get("host");
+      req.body.archivo = serverUrl + "/uploads/" + req.file.filename;
+    }
+    const result = await prisma.project.create({
+      data: {
+        ...req.body,
+        equipo_trabajadores: {
+          create: [{ trabajador_id: 1 }, { trabajador_id: 2 }],
+        },
+      },
     });
+    res.status(201).json(result);
   } catch (error) {
-    res.status(500);
-    res.send(error.message);
+    res.status(500).send(error.message);
   }
 };
 
-//GETBYID
+//*GETBYID
 export const getProjectById = async (req, res) => {
-  const { id } = req.params;
   try {
-    const pool = await getConnection();
-    const result = await pool
-      .request()
-      .input("idprojects", id)
-      .execute("agpdb.getByIdProjects");
-    res.json(result.recordset[0]);
-  } catch (error) {
-    res.status(500);
-    res.send(error.message);
-  }
-};
-
-//DELETE
-export const deleteProject = async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const pool = await getConnection();
-    await pool
-      .request()
-      .input("idprojects", id)
-      .execute("agpdb.deleteProjects");
-    res.sendStatus(204);
-  } catch (error) {
-    res.status(500);
-    res.send(error.message);
-  }
-};
-
-//UPDATE
-export const updateProject = async (req, res) => {
-  let serverUrl = req.protocol + "://" + req.get("host");
-  /* console.log(req.file); */
-  const { id } = req.params;
-  const {
-    modelo,
-    nombre,
-    responsable_id,
-    prioridad,
-    tipo,
-    responsabilidad,
-    descripcion,
-    costo,
-    archivo = serverUrl + "/uploads/" + req.file.filename,
-    fecha_identificacion,
-    fecha_inicio,
-    fecha_cierre,
-    estado,
-    area_responsable,
-    area_usuario,
-    empresa_responsable,
-    empresa_usuario,
-    sede_responsable,
-    sede_usuario,
-    equipo_trabajo,
-  } = req.body;
-  try {
-    const pool = await getConnection();
-    await pool
-      .request()
-      .input("idprojects", id)
-      .input("modelo", sql.VarChar, modelo)
-      .input("nombre", sql.VarChar, nombre)
-      .input("responsable_id", sql.Int, responsable_id)
-      .input("prioridad", sql.VarChar, prioridad)
-      .input("tipo", sql.VarChar, tipo)
-      .input("responsabilidad", sql.VarChar, responsabilidad)
-      .input("descripcion", sql.VarChar, descripcion)
-      .input("costo", sql.Decimal, costo)
-      .input("archivo", sql.VarChar, archivo)
-      .input("fecha_identificacion", sql.Date, fecha_identificacion)
-      .input("fecha_inicio", sql.Date, fecha_inicio)
-      .input("fecha_cierre", sql.Date, fecha_cierre)
-      .input("estado", sql.VarChar, estado)
-      .input("area_responsable", sql.VarChar, area_responsable)
-      .input("area_usuario", sql.VarChar, area_usuario)
-      .input("empresa_responsable", sql.VarChar, empresa_responsable)
-      .input("empresa_usuario", sql.VarChar, empresa_usuario)
-      .input("sede_responsable", sql.VarChar, sede_responsable)
-      .input("sede_usuario", sql.VarChar, sede_usuario)
-      .input("equipo_trabajo", sql.VarChar, equipo_trabajo)
-      .execute("agpdb.updateProjects");
-    res.json({
-      id,
-      modelo,
-      nombre,
-      responsable_id,
-      prioridad,
-      tipo,
-      responsabilidad,
-      descripcion,
-      costo,
-      archivo,
-      fecha_identificacion,
-      fecha_inicio,
-      fecha_cierre,
-      estado,
-      area_responsable,
-      area_usuario,
-      empresa_responsable,
-      empresa_usuario,
-      sede_responsable,
-      sede_usuario,
-      equipo_trabajo,
+    const { id } = req.params;
+    const result = await prisma.project.findUnique({
+      where: {
+        id: Number(id),
+      },
+      include: { equipo_trabajadores: true },
     });
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500);
-    res.send(error.message);
+    res.status(500).send(error.message);
+  }
+};
+
+//*UPDATE
+export const updateProject = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!req.body.archivo) {
+      req.body.archivo;
+    } else {
+      //console.log(req.file);
+      let serverUrl = req.protocol + "://" + req.get("host");
+      req.body.archivo = serverUrl + "/uploads/" + req.file.filename;
+    }
+    const result = await prisma.project.update({
+      where: { id: Number(id) },
+      data: req.body,
+    });
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+//*DELETE
+export const deleteProject = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await prisma.project.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+    res.status(204).json(result);
+  } catch (error) {
+    res.status(500).send(error.message);
   }
 };

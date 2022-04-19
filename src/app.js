@@ -32,6 +32,6 @@ app.use("/acciones", acciones);
 app.use("/projects", projects);
 app.use("/trabajadores", trabajadores);
 app.use("/actividades", actividades);
-app.use("/test", equipo_trabajadores);
+app.use("/equipo", equipo_trabajadores);
 
 export default app;

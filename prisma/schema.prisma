@@ -8,12 +8,13 @@ datasource db {
 }
 
 //*NOTAS
+// @map -> Cambia el nombre del campo del schema en la base de datos que se generara
+// @@map -> Cambia el nombre de la tabla del schema en la base de datos que se generara
 // @@id -> Id unificado
 // @@index -> indices no agrupados para agilizar la busqueda
 // tabla TABLA[] -> este campo genera la conexion con la otra tabla para la foreign key
 // tabla TABLA @relation() -> este campo no existe en la tabla, es la foreign key que hace la conexion
 
-// TODO: Cambiar el naming convention para las tablas que no sea UPPER CASE, seguir el estandar de prisma nabming conventions
 model Project {
   id                   Int        @id @default(autoincrement())
   modelo               String?    @db.NVarChar(20)
@@ -72,6 +73,8 @@ model Trabajador {
 }
 
 model EquipoDeTrabajo {
+  // TODO: Probar con el id solo, para ver si se ve mejor al listar
+  //id               Int       @id @default(autoincrement())
   trabajador_id Int
   project_id    Int
   projects      Project    @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)

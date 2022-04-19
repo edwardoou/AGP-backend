@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,89 +7,116 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model PROJECT {
-  id                   Int              @id @default(autoincrement())
-  modelo               String           @db.NVarChar(20)
-  nombre               String           @db.NVarChar(100)
-  prioridad            String           @db.NVarChar(10)
-  tipo                 String           @db.NVarChar(20)
-  responsabilidad      String           @db.NVarChar(20)
-  descripcion          String           @db.NVarChar(500)
-  costo                Decimal          @db.Decimal(10, 2)
-  archivo              String           @db.NVarChar(200)
-  fecha_identificacion DateTime         @db.Date
-  fecha_inicio         DateTime         @db.Date
-  fecha_cierre         DateTime         @db.Date
-  estado               String           @db.NVarChar(20)
-  area_responsable     String           @db.NVarChar(80)
-  area_usuario         String           @db.NVarChar(80)
-  empresa_responsable  String           @db.NVarChar(15)
-  empresa_usuario      String           @db.NVarChar(15)
-  sede_responsable     String           @db.NVarChar(10)
-  sede_usuario         String           @db.NVarChar(10)
-  responsable_id       Int?
-  TRABAJADORES         TRABAJADOR?      @relation(fields: [responsable_id], references: [id])
-  ACCIONES             ACCION[]
-  ACTIVIDADES          ACTIVIDAD[]
-  EQUIPO_TRABAJADORES  EQUIPO_TRABAJO[]
+//*NOTAS
+// @map -> Cambia el nombre del campo del schema en la base de datos que se generara
+// @@map -> Cambia el nombre de la tabla del schema en la base de datos que se generara
+// @@id -> Id unificado
+// @@index -> indices no agrupados para agilizar la busqueda
+// tabla TABLA[] -> este campo genera la conexion con la otra tabla para la foreign key
+// tabla TABLA @relation() -> este campo no existe en la tabla, es la foreign key que hace la conexion
+
+model Project {
+  id                  Int        @id @default(autoincrement())
+  modelo              String?    @db.NVarChar(20)
+  nombre              String?    @db.NVarChar(100)
+  prioridad           String?    @db.NVarChar(10)
+  tipo                String?    @db.NVarChar(20)
+  responsabilidad     String?    @db.NVarChar(20)
+  descripcion         String?    @db.NVarChar(500)
+  costo               Decimal?   @db.Decimal(10, 2)
+  archivo             String?    @db.NVarChar(200)
+  fechaIdentificacion DateTime?  @map("fecha_identificacion") @db.Date
+  fechaInicio         DateTime?  @map("fecha_inicio") @db.Date
+  fechaCierre         DateTime?  @map("fecha_cierre") @db.Date
+  estado              String?    @db.NVarChar(20)
+  areaUsuario         String?    @map("area_usuario") @db.NVarChar(80)
+  areaResponsable     String?    @map("area_responsable") @db.NVarChar(80)
+  empresaUsuario      String?    @map("empresa_usuario") @db.NVarChar(15)
+  empresaResponsable  String?    @map("empresa_responsable") @db.NVarChar(15)
+  sedeUsuario         String?    @map("sede_usuario") @db.NVarChar(10)
+  sedeResponsable     String?    @map("sede_responsable") @db.NVarChar(10)
+  responsableId       Int        @map("responsable_id")
+  responsable         Trabajador @relation(fields: [responsableId], references: [id], onUpdate: NoAction)
+
+  //No aparecen en la tabla
+  acciones           Accion[]
+  actividades        Actividad[]
+  equipoTrabajadores EquipoDeTrabajo[]
+
+  @@index([responsableId])
+  @@map("PROJECTS")
 }
 
-model TRABAJADOR {
-  id               Int              @id @default(autoincrement())
-  foto             String           @db.NVarChar(100)
-  nombre           String           @db.NVarChar(100)
-  telefono         String           @db.NVarChar(15)
-  direccion        String           @db.NVarChar(100)
-  observacion      String           @db.NVarChar(500)
-  sexo             String           @db.NVarChar(10)
-  fecha_nacimiento DateTime         @db.Date
-  fecha_ingreso    DateTime         @db.Date
-  fecha_cese       DateTime         @db.Date
-  categoria        String           @db.NVarChar(100)
-  sede             String           @db.NVarChar(45)
-  area             String           @db.NVarChar(80)
-  puesto           String           @db.NVarChar(100)
-  empresa          String           @db.NVarChar(15)
-  ACTIVIDADES      ACTIVIDAD?
-  ACCIONES         ACCION?
-  PROJECTS         PROJECT[]
-  EQUIPO_PROJECTS  EQUIPO_TRABAJO[]
+model Trabajador {
+  id              Int       @id @default(autoincrement())
+  foto            String?   @db.NVarChar(100)
+  nombre          String?   @db.NVarChar(100)
+  telefono        String?   @db.NVarChar(15)
+  direccion       String?   @db.NVarChar(100)
+  observacion     String?   @db.NVarChar(500)
+  sexo            String?   @db.NVarChar(10)
+  fechaNacimiento DateTime? @map("fecha_nacimiento") @db.Date
+  fechaIngreso    DateTime? @map("fecha_ingreso") @db.Date
+  fechaCese       DateTime? @map("fecha_cese") @db.Date
+  categoria       String?   @db.NVarChar(100)
+  sede            String?   @db.NVarChar(45)
+  area            String?   @db.NVarChar(80)
+  puesto          String?   @db.NVarChar(100)
+  empresa         String?   @db.NVarChar(15)
+
+  //No aparecen en la tabla
+  acciones           Accion[]
+  actividades        Actividad[]
+  projects           Project[]
+  equipoTrabajadores EquipoDeTrabajo[]
+  @@map("TRABAJADORES")
 }
 
-model EQUIPO_TRABAJO {
-  trabajador    TRABAJADOR @relation(fields: [trabajador_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  trabajador_id Int
-  project       PROJECT    @relation(fields: [project_id], references: [id])
-  project_id    Int
+model EquipoDeTrabajo {
+  trabajadorId Int        @map("trabajador_id")
+  projectId    Int        @map("project_id")
+  projects     Project    @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  trabajadores Trabajador @relation(fields: [trabajadorId], references: [id], onUpdate: NoAction)
 
-  @@id([trabajador_id, project_id])
+  @@id([trabajadorId, projectId])
+  @@index([projectId])
+  @@index([trabajadorId])
+  @@map("EQUIPO_DE_TRABAJO")
 }
 
-model ACCION {
-  id             Int        @id @default(autoincrement())
-  nombre         String     @db.NVarChar(100)
-  tipo           String     @db.NVarChar(20)
-  asistencia     String     @db.NVarChar(50)
-  descripcion    String     @db.NVarChar(500)
-  archivo        String     @db.NVarChar(200)
-  fecha_limite   DateTime   @db.Date
-  estado         String     @db.NVarChar(100)
-  responsable_id Int        @unique
-  project_id     Int?
-  PROJECTS       PROJECT?   @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  TRABAJADORES   TRABAJADOR @relation(fields: [responsable_id], references: [id])
+model Accion {
+  id            Int        @id @default(autoincrement())
+  nombre        String?    @db.NVarChar(100)
+  tipo          String?    @db.NVarChar(20)
+  asistencia    String?    @db.NVarChar(50)
+  descripcion   String?    @db.NVarChar(500)
+  archivo       String?    @db.NVarChar(200)
+  fechaLimite   DateTime?  @map("fecha_limite") @db.Date
+  estado        String?    @db.NVarChar(100)
+  projectId     Int        @map("project_id")
+  responsableId Int        @map("responsable_id")
+  projects      Project    @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  trabajadores  Trabajador @relation(fields: [responsableId], references: [id], onUpdate: NoAction)
+
+  @@index([projectId])
+  @@index([responsableId])
+  @@map("ACCIONES")
 }
 
-model ACTIVIDAD {
+model Actividad {
   id              Int        @id @default(autoincrement())
-  nombre          String     @db.NVarChar(100)
-  responsabilidad String     @db.NVarChar(10)
-  descripcion     String     @db.NVarChar(500)
-  archivo         String     @db.NVarChar(200)
-  fecha_limite    DateTime   @db.Date
-  estado          String     @db.NVarChar(100)
-  responsable_id  Int        @unique
-  project_id      Int?
-  PROJECTS        PROJECT?   @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  TRABAJADORES    TRABAJADOR @relation(fields: [responsable_id], references: [id])
+  nombre          String?    @db.NVarChar(100)
+  responsabilidad String?    @db.NVarChar(10)
+  descripcion     String?    @db.NVarChar(500)
+  archivo         String?    @db.NVarChar(200)
+  fechaLimite     DateTime?  @map("fecha_limite") @db.Date
+  estado          String?    @db.NVarChar(100)
+  projectId       Int        @map("project_id")
+  responsableId   Int        @map("responsable_id")
+  projects        Project    @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  trabajadores    Trabajador @relation(fields: [responsableId], references: [id], onUpdate: NoAction)
+
+  @@index([projectId])
+  @@index([responsableId])
+  @@map("ACTIVIDADES")
 }
