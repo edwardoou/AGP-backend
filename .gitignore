@@ -3,4 +3,3 @@ node_modules
 dist
 uploads
 prisma/migrations
-migration_tock.toml
