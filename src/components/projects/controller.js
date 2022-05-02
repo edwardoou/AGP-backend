@@ -5,9 +5,12 @@ export const getProjects = async (req, res) => {
   try {
     const result = await prisma.project.findMany({
       include: {
-        responsable: { include: { nombre: true } },
+        responsable: { select: { nombre: true } },
+        equipo_trabajadores: {
+          select: { trabajadores: { select: { nombre: true } } },
+        },
+        _count: true,
       },
-      equipo_trabajadores: true,
     });
     res.status(200).json(result);
   } catch (error) {
@@ -15,12 +18,11 @@ export const getProjects = async (req, res) => {
   }
 };
 
-// TODO: Revisar ya que antes daba un aray por defecto el select multiple de material UI, quiza nos ahorre chamba
 // TODO: Generar una condicional en caso no exista el id de la foreign key(para acciones, trabajadores, equipo_trabajadores y projects)
 // FIXME: No funciona la subida de archivos, probablemente incompatibilidad con multer
-//TODO: Pensar como debe ingresar los ids para trabajador https://www.google.com/search?q=add+many+to+many+prisma&oq=add+many+to+many+prisma&aqs=chrome..69i57.3001j0j1&sourceid=chrome&ie=UTF-8
 //*POST
 export const createProject = async (req, res) => {
+  //Llega con comillas
   if (
     !req.body.archivo ||
     req.body.archivo === "null" ||
@@ -33,27 +35,34 @@ export const createProject = async (req, res) => {
     req.body.archivo = serverUrl + "/uploads/" + req.file.filename;
   }
   try {
-    req.body.responsable_id = Number(req.body.responsable_id);
-    req.body.costo = Number(req.body.costo);
-    let identificacion = new Date(req.body.fecha_identificacion);
-    let inicio = new Date(req.body.fecha_inicio);
-    let cierre = new Date(req.body.fecha_cierre);
-    req.body.fecha_identificacion = identificacion.toISOString();
-    req.body.fecha_inicio = inicio.toISOString();
-    req.body.fecha_cierre = cierre.toISOString();
-    let equipo = req.body.equipo_trabajadores.split(",");
-    //const team2 = ["1", "2"];
+    let workers = req.body.equipo_trabajadores.split(","); //["1", "2"];
     const result = await prisma.project.create({
       data: {
         ...req.body,
+        responsable_id: Number(req.body.responsable_id),
+        costo: Number(req.body.costo),
+        fecha_identificacion: new Date(
+          req.body.fecha_identificacion
+        ).toISOString(),
+        fecha_inicio: new Date(req.body.fecha_inicio).toISOString(),
+        fecha_cierre: new Date(req.body.fecha_cierre).toISOString(),
+        //*foreign table
+        //Relacion para los ids de trabajadores en tabla equipo_trabajadores
         equipo_trabajadores: {
-          create: equipo.map((id) => ({
-            trabajador_id: Number(id),
+          create: workers.map((id) => ({
+            trabajadores: {
+              connect: {
+                id: Number(id),
+              },
+            },
           })),
         },
       },
       include: {
-        equipo_trabajadores: true,
+        responsable: { select: { nombre: true } },
+        equipo_trabajadores: {
+          select: { trabajador_id: true },
+        },
       },
     });
     res.status(201).json(result);
