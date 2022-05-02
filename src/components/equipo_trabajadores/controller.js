@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "../../db";
 
 //*GET
 export const getEquipo = async (req, res) => {

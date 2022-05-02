@@ -1,16 +1,17 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "../../db";
 
 //*GET
 export const getProjects = async (req, res) => {
   try {
     const result = await prisma.project.findMany({
-      include: { responsable: true, equipo_trabajadores: true },
+      include: {
+        responsable: { include: { nombre: true } },
+      },
+      equipo_trabajadores: true,
     });
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -57,7 +58,7 @@ export const createProject = async (req, res) => {
     });
     res.status(201).json(result);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -73,7 +74,7 @@ export const getProjectById = async (req, res) => {
     });
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -95,7 +96,7 @@ export const updateProject = async (req, res) => {
     });
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -110,6 +111,6 @@ export const deleteProject = async (req, res) => {
     });
     res.status(204).json(result);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({ message: error.message });
   }
 };
