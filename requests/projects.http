@@ -34,7 +34,7 @@ GET {{api}}/1004
 DELETE {{api}}/3
 
 ### update
-PUT {{api}}/1
+PUT {{api}}/2016
 Content-Type: application/json
 
 {
@@ -56,5 +56,6 @@ Content-Type: application/json
     "empresa_responsable": "Maxco",
     "empresa_usuario": "Precor",
     "sede_responsable": "PLANTA",
-    "sede_usuario": "QUBO"
+    "sede_usuario": "QUBO",
+    "equipo_trabajadores": "1"
 }
