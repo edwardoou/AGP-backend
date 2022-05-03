@@ -26,6 +26,9 @@ router.route("/").get(controller.getProjects);
 //POST
 router.route("/").post(upload.single("archivo"), controller.createProject);
 
+//TOTAL, las urls tipo string deben ir antes de la de tipo int.
+router.route("/count").get(controller.getCountProjects);
+
 // GET BY ID
 router.route("/:id").get(controller.getProjectById);
 

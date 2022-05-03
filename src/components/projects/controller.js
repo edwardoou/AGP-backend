@@ -166,3 +166,13 @@ export const deleteProject = async (req, res) => {
     res.status(500).json({ ok: false, data: error.message });
   }
 };
+
+//*TOTAL
+export const getCountProjects = async (req, res) => {
+  try {
+    const result = await prisma.project.count();
+    res.status(200).json({ ok: true, data: result });
+  } catch (error) {
+    res.status(500).send({ ok: false, data: error.message });
+  }
+};
