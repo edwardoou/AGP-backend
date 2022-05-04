@@ -16,22 +16,18 @@ export const getTrabajadores = async (req, res) => {
 
 //*POST
 export const createTrabajador = async (req, res) => {
-  //Llega con comillas
-  if (
-    !req.body.foto ||
-    req.body.foto === "null" ||
-    req.body.foto === "undefined"
-  ) {
-    req.body.foto;
+  //console.log(req.file);
+  if (!req.file) {
+    req.body.foto = null;
   } else {
-    //console.log(req.file);
+    //Que mejor sea base 64
     let serverUrl = req.protocol + "://" + req.get("host");
     req.body.foto = serverUrl + "/uploads/" + req.file.filename;
   }
-  if(req.body.fecha_cese){
-    req.body.fecha_cese = new Date(req.body.fecha_cese).toISOString()
-  }else{
-    req.body.fecha_cese = null
+  if (req.body.fecha_cese) {
+    req.body.fecha_cese = new Date(req.body.fecha_cese).toISOString();
+  } else {
+    req.body.fecha_cese = null;
   }
   try {
     const result = await prisma.trabajador.create({
@@ -96,6 +92,7 @@ export const updateTrabajador = async (req, res) => {
 };
 
 //*DELETE
+//Ya que es trabajador mejor es no eliminar, solo poner su fecha de cese y listo
 export const deleteTrabajador = async (req, res) => {
   try {
     const { id } = req.params;

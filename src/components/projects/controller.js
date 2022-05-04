@@ -22,15 +22,10 @@ export const getProjects = async (req, res) => {
 // FIXME: No funciona la subida de archivos, probablemente incompatibilidad con multer
 //*POST
 export const createProject = async (req, res) => {
-  //Llega con comillas
-  if (
-    !req.body.archivo ||
-    req.body.archivo === "null" ||
-    req.body.archivo === "undefined"
-  ) {
-    req.body.archivo;
+  if (!req.file) {
+    req.body.archivo = null;
   } else {
-    //console.log(req.file);
+    //Que mejor sea base 64
     let serverUrl = req.protocol + "://" + req.get("host");
     req.body.archivo = serverUrl + "/uploads/" + req.file.filename;
   }
