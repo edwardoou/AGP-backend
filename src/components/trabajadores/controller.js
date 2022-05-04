@@ -3,27 +3,47 @@ import { prisma } from "../../db";
 //*GET
 export const getTrabajadores = async (req, res) => {
   try {
-    const result = await prisma.trabajador.findMany();
-    res.status(200).json(result);
+    const result = await prisma.trabajador.findMany({
+      include: {
+        _count: true,
+      },
+    });
+    res.status(200).json({ ok: true, data: result });
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({ ok: false, data: error.message });
   }
 };
 
 //*POST
 export const createTrabajador = async (req, res) => {
+  //Llega con comillas
+  if (
+    !req.body.foto ||
+    req.body.foto === "null" ||
+    req.body.foto === "undefined"
+  ) {
+    req.body.foto;
+  } else {
+    //console.log(req.file);
+    let serverUrl = req.protocol + "://" + req.get("host");
+    req.body.foto = serverUrl + "/uploads/" + req.file.filename;
+  }
+  if(req.body.fecha_cese){
+    req.body.fecha_cese = new Date(req.body.fecha_cese).toISOString()
+  }else{
+    req.body.fecha_cese = null
+  }
   try {
-    if (!req.body.foto) {
-      req.body.foto;
-    } else {
-      //console.log(req.file);
-      let serverUrl = req.protocol + "://" + req.get("host");
-      req.body.foto = serverUrl + "/uploads/" + req.file.filename;
-    }
-    const result = await prisma.trabajador.create({ data: req.body });
+    const result = await prisma.trabajador.create({
+      data: {
+        ...req.body,
+        fecha_nacimiento: new Date(req.body.fecha_nacimiento).toISOString(),
+        fecha_ingreso: new Date(req.body.fecha_ingreso).toISOString(),
+      },
+    });
     res.status(201).json(result);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -35,41 +55,43 @@ export const getTrabajadorById = async (req, res) => {
       where: {
         id: Number(id),
       },
+      include: {
+        _count: true,
+      },
     });
-    res.status(200).json(result);
+    res.status(200).json({ ok: true, data: result });
   } catch (error) {
-    res.status(500).send(error.message);
-  }
-};
-
-//*TOTAL
-export const getCountTrabajadores = async (req, res) => {
-  try {
-    const result = await prisma.trabajador.count();
-    res.status(200).json(result);
-  } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({ ok: false, data: error.message });
   }
 };
 
 //*UPDATE
 export const updateTrabajador = async (req, res) => {
+  //Llega con comillas
+  if (
+    !req.body.foto ||
+    req.body.foto === "null" ||
+    req.body.foto === "undefined"
+  ) {
+    req.body.foto;
+  } else {
+    //console.log(req.file);
+    let serverUrl = req.protocol + "://" + req.get("host");
+    req.body.foto = serverUrl + "/uploads/" + req.file.filename;
+  }
   try {
-    const { id } = req.params;
-    if (!req.body.foto) {
-      req.body.foto;
-    } else {
-      //console.log(req.file);
-      let serverUrl = req.protocol + "://" + req.get("host");
-      req.body.foto = serverUrl + "/uploads/" + req.file.filename;
-    }
     const result = await prisma.trabajador.update({
       where: { id: Number(id) },
-      data: req.body,
+      data: {
+        ...req.body,
+        fecha_nacimiento: new Date(req.body.fecha_nacimiento).toISOString(),
+        fecha_ingreso: new Date(req.body.fecha_ingreso).toISOString(),
+        fecha_cese: new Date(req.body.fecha_cese).toISOString(),
+      },
     });
-    res.status(200).json(result);
+    res.status(200).json({ ok: true, data: result });
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({ ok: false, data: error.message });
   }
 };
 
@@ -77,13 +99,23 @@ export const updateTrabajador = async (req, res) => {
 export const deleteTrabajador = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await prisma.trabajador.delete({
+    await prisma.trabajador.delete({
       where: {
         id: Number(id),
       },
     });
-    res.status(204).json(result);
+    return res.status(200).json({ ok: true });
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).send({ ok: false, data: error.message });
+  }
+};
+
+//*TOTAL
+export const getCountTrabajadores = async (req, res) => {
+  try {
+    const result = await prisma.trabajador.count();
+    res.status(200).json({ ok: true, data: result });
+  } catch (error) {
+    res.status(500).send({ ok: false, data: error.message });
   }
 };

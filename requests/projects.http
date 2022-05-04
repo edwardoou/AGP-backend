@@ -1,6 +1,7 @@
 @api = http://localhost:4000/projects
 GET {{api}}
 ###
+//Por alguna razon enviar data directamente de aca falla, del frontend es mejor
 POST {{api}}
 Content-Type: application/json
 
@@ -28,21 +29,21 @@ Content-Type: application/json
 }
 
 ### get by id
-GET {{api}}/1004
+GET {{api}}/2004
 
 ### delete product 
 DELETE {{api}}/3
 
 ### update
-PUT {{api}}/2016
+PUT {{api}}/2018
 Content-Type: application/json
 
 {
-    "modelo": "Innovacion",
+    "modelo": "Proyecto",
     "nombre": "AGP - Test de Update",
     "responsable_id": 1,
     "prioridad": "Alta",
-    "tipo": "Estandar",
+    "tipo": "None",
     "responsabilidad": "Lider",
     "descripcion": "Aplicacion",
     "costo": 0,
@@ -50,14 +51,14 @@ Content-Type: application/json
     "fecha_identificacion": "2022-12-01T00:00:00.000Z",
     "fecha_inicio": "2022-12-01T00:00:00.000Z",
     "fecha_cierre": "2022-12-01T00:00:00.000Z",
-    "estado": "En desarrollo",
+    "estado": "To-Do",
     "area_responsable": "Gestion",
     "area_usuario": "Innovacion",
     "empresa_responsable": "Maxco",
     "empresa_usuario": "Precor",
     "sede_responsable": "PLANTA",
     "sede_usuario": "QUBO",
-    "equipo_trabajadores": "1"
+    "equipo_trabajadores": "1,2"
 }
 
 ### count

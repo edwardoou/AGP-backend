@@ -83,7 +83,7 @@ export const getProjectById = async (req, res) => {
       include: {
         responsable: { select: { nombre: true } },
         equipo_trabajadores: {
-          select: { trabajadores: { select: { nombre: true } } },
+          select: { trabajadores: { select: { id: true, nombre: true } } },
         },
         _count: true,
       },
@@ -161,7 +161,7 @@ export const deleteProject = async (req, res) => {
         id: Number(id),
       },
     });
-    res.status(204);
+    return res.status(200).json({ ok: true });
   } catch (error) {
     res.status(500).json({ ok: false, data: error.message });
   }
