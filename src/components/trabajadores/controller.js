@@ -20,9 +20,7 @@ export const createTrabajador = async (req, res) => {
   if (!req.file) {
     req.body.foto = null;
   } else {
-    //Que mejor sea base 64
-    let serverUrl = req.protocol + "://" + req.get("host");
-    req.body.foto = serverUrl + "/uploads/" + req.file.filename;
+    req.body.foto = req.file.buffer.toString("base64");
   }
   if (req.body.fecha_cese) {
     req.body.fecha_cese = new Date(req.body.fecha_cese).toISOString();

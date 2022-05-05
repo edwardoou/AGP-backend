@@ -49,7 +49,7 @@ model Project {
 
 model Trabajador {
   id               Int       @id @default(autoincrement())
-  foto             String?   @db.NVarChar(100)
+  foto             String?   @db.VarChar(MAX)
   nombre           String?   @db.NVarChar(100)
   telefono         String?   @db.NVarChar(15)
   direccion        String?   @db.NVarChar(100)

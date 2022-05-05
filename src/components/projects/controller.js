@@ -26,6 +26,7 @@ export const createProject = async (req, res) => {
     req.body.archivo = null;
   } else {
     //Que mejor sea base 64
+    //let serverUrl = __dirname.replace(/\\/g, "/")
     let serverUrl = req.protocol + "://" + req.get("host");
     req.body.archivo = serverUrl + "/uploads/" + req.file.filename;
   }
