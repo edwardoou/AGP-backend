@@ -9,6 +9,7 @@ import {
   projects,
   trabajadores,
   equipo_trabajadores,
+  archivo,
 } from "./components";
 
 // objecto 'app' para config. express
@@ -33,5 +34,6 @@ app.use("/projects", projects);
 app.use("/trabajadores", trabajadores);
 app.use("/actividades", actividades);
 app.use("/equipo", equipo_trabajadores);
+app.use("/descarga", archivo);
 
 export default app;

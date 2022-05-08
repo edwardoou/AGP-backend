@@ -24,8 +24,8 @@ export const getProjects = async (req, res) => {
 export const createProject = async (req, res) => {
   if (req.file) {
     //let localUrl = __dirname.replace(/\\/g, "/")
-    const serverUrl = `${req.protocol}://${req.get("host")}`;
-    req.body.archivo = serverUrl + "/uploads/" + req.file.filename;
+    const serverUrl = `${req.protocol}://${req.get("host")}/`;
+    req.body.archivo = serverUrl + "uploads/" + req.file.filename;
   } else {
     req.body.archivo = null;
   }
@@ -117,8 +117,7 @@ export const updateProject = async (req, res) => {
   //?Reemplazar por nuevo
   if (req.file) {
     //console.log(req.file);
-    let serverUrl = req.protocol + "://" + req.get("host");
-    req.body.archivo = serverUrl + "/uploads/" + req.file.filename;
+    req.body.archivo = serverUrl + "uploads/" + req.file.filename;
   } else {
     req.body.archivo = null;
   }
@@ -205,6 +204,48 @@ export const deleteProject = async (req, res) => {
 export const getCountProjects = async (req, res) => {
   try {
     const result = await prisma.project.count();
+    res.status(200).json({ ok: true, data: result });
+  } catch (error) {
+    res.status(500).send({ ok: false, data: error.message });
+  }
+};
+
+//*TOTAL PROYECTOS
+export const getCountProyectos = async (req, res) => {
+  try {
+    const result = await prisma.project.count({
+      where: {
+        modelo: "Proyecto",
+      },
+    });
+    res.status(200).json({ ok: true, data: result });
+  } catch (error) {
+    res.status(500).send({ ok: false, data: error.message });
+  }
+};
+
+//*TOTAL INNOVACIONES
+export const getCountInnovaciones = async (req, res) => {
+  try {
+    const result = await prisma.project.count({
+      where: {
+        modelo: "Innovacion",
+      },
+    });
+    res.status(200).json({ ok: true, data: result });
+  } catch (error) {
+    res.status(500).send({ ok: false, data: error.message });
+  }
+};
+
+//*TOTAL PROCESOS
+export const getCountProcesos = async (req, res) => {
+  try {
+    const result = await prisma.project.count({
+      where: {
+        modelo: "Proceso",
+      },
+    });
     res.status(200).json({ ok: true, data: result });
   } catch (error) {
     res.status(500).send({ ok: false, data: error.message });

@@ -6,8 +6,8 @@ const DIR = "./uploads/";
 import { v4 as uuidv4 } from "uuid";
 
 const multer = require("multer");
-const storage = multer.memoryStorage();
-const storage2 = multer.diskStorage({
+//const storage = multer.memoryStorage();
+const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, DIR);
   },

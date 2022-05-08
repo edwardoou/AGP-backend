@@ -5,7 +5,6 @@ const path = require("path");
 const DIR = "./uploads/";
 import { v4 as uuidv4 } from "uuid";
 
-/* --- MULTER START --- */
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -16,7 +15,6 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
-/* --- MULTER END --- */
 
 const router = Router();
 
@@ -26,8 +24,12 @@ router.route("/").get(controller.getProjects);
 //POST
 router.route("/").post(upload.single("archivo"), controller.createProject);
 
-//TOTAL, las urls tipo string deben ir antes de la de tipo int.
-router.route("/count").get(controller.getCountProjects);
+//*---TOTALES
+router.route("/total").get(controller.getCountProjects);
+router.route("/proyectos").get(controller.getCountProyectos);
+router.route("/procesos").get(controller.getCountProcesos);
+router.route("/innovaciones").get(controller.getCountInnovaciones);
+//*---
 
 // GET BY ID
 router.route("/:id").get(controller.getProjectById);
