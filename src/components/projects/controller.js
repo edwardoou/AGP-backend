@@ -203,50 +203,31 @@ export const deleteProject = async (req, res) => {
 //*TOTAL
 export const getCountProjects = async (req, res) => {
   try {
-    const result = await prisma.project.count();
-    res.status(200).json({ ok: true, data: result });
-  } catch (error) {
-    res.status(500).send({ ok: false, data: error.message });
-  }
-};
-
-//*TOTAL PROYECTOS
-export const getCountProyectos = async (req, res) => {
-  try {
-    const result = await prisma.project.count({
+    const total = await prisma.project.count();
+    const proyectos = await prisma.project.count({
       where: {
         modelo: "Proyecto",
       },
     });
-    res.status(200).json({ ok: true, data: result });
-  } catch (error) {
-    res.status(500).send({ ok: false, data: error.message });
-  }
-};
-
-//*TOTAL INNOVACIONES
-export const getCountInnovaciones = async (req, res) => {
-  try {
-    const result = await prisma.project.count({
+    const innovaciones = await prisma.project.count({
       where: {
         modelo: "Innovacion",
       },
     });
-    res.status(200).json({ ok: true, data: result });
-  } catch (error) {
-    res.status(500).send({ ok: false, data: error.message });
-  }
-};
-
-//*TOTAL PROCESOS
-export const getCountProcesos = async (req, res) => {
-  try {
-    const result = await prisma.project.count({
+    const procesos = await prisma.project.count({
       where: {
         modelo: "Proceso",
       },
     });
-    res.status(200).json({ ok: true, data: result });
+    res.status(200).json({
+      ok: true,
+      data: {
+        total: total,
+        proyectos: proyectos,
+        innovaciones: innovaciones,
+        procesos: procesos,
+      },
+    });
   } catch (error) {
     res.status(500).send({ ok: false, data: error.message });
   }

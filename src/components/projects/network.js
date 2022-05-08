@@ -24,12 +24,8 @@ router.route("/").get(controller.getProjects);
 //POST
 router.route("/").post(upload.single("archivo"), controller.createProject);
 
-//*---TOTALES
-router.route("/total").get(controller.getCountProjects);
-router.route("/proyectos").get(controller.getCountProyectos);
-router.route("/procesos").get(controller.getCountProcesos);
-router.route("/innovaciones").get(controller.getCountInnovaciones);
-//*---
+//COUNT
+router.route("/count").get(controller.getCountProjects);
 
 // GET BY ID
 router.route("/:id").get(controller.getProjectById);
