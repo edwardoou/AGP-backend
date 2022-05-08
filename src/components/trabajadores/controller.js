@@ -1,3 +1,4 @@
+const fs = require("fs");
 import { prisma } from "../../db";
 
 //*GET
@@ -16,12 +17,15 @@ export const getTrabajadores = async (req, res) => {
 
 //*POST
 export const createTrabajador = async (req, res) => {
-  //console.log(req.file);
-  if (!req.file) {
-    req.body.foto = null;
+  //?Upload file
+  if (req.file) {
+    //req.body.foto = req.file.buffer.toString("base64");
+    const serverUrl = `${req.protocol}://${req.get("host")}`;
+    req.body.foto = serverUrl + "/uploads/" + req.file.filename;
   } else {
-    req.body.foto = req.file.buffer.toString("base64");
+    req.body.foto = null;
   }
+  //?Fecha de cese
   if (req.body.fecha_cese) {
     req.body.fecha_cese = new Date(req.body.fecha_cese).toISOString();
   } else {
@@ -33,6 +37,9 @@ export const createTrabajador = async (req, res) => {
         ...req.body,
         fecha_nacimiento: new Date(req.body.fecha_nacimiento).toISOString(),
         fecha_ingreso: new Date(req.body.fecha_ingreso).toISOString(),
+      },
+      include: {
+        _count: true,
       },
     });
     res.status(201).json(result);
@@ -61,14 +68,36 @@ export const getTrabajadorById = async (req, res) => {
 
 //*UPDATE
 export const updateTrabajador = async (req, res) => {
-  //Llega con comillas
-  if (!req.file) {
-    req.body.foto = null;
-  } else {
-    //console.log(req.file);
+  const serverUrl = `${req.protocol}://${req.get("host")}/`;
+  const { id } = req.params;
+  //?Seleccionar trabajador
+  const getTrabajador = await prisma.trabajador.findUnique({
+    where: {
+      id: Number(id),
+    },
+    select: {
+      foto: true,
+    },
+  });
+  //?Eliminar foto
+  if (getTrabajador.foto) {
+    const archivo = getTrabajador.foto.split(serverUrl)[1];
+    // eliminar un archivo
+    fs.unlink(archivo, (err) => {
+      if (err) {
+        throw err;
+      }
+      console.log(`DELETED FILE -> ${archivo}`);
+    });
+  }
+  //?Reemplazar por nuevo
+  if (req.file) {
     let serverUrl = req.protocol + "://" + req.get("host");
     req.body.foto = serverUrl + "/uploads/" + req.file.filename;
+  } else {
+    req.body.foto = null;
   }
+  //?update trabajador
   try {
     const result = await prisma.trabajador.update({
       where: { id: Number(id) },
@@ -77,6 +106,9 @@ export const updateTrabajador = async (req, res) => {
         fecha_nacimiento: new Date(req.body.fecha_nacimiento).toISOString(),
         fecha_ingreso: new Date(req.body.fecha_ingreso).toISOString(),
         fecha_cese: new Date(req.body.fecha_cese).toISOString(),
+      },
+      include: {
+        _count: true,
       },
     });
     res.status(200).json({ ok: true, data: result });
@@ -90,7 +122,29 @@ export const updateTrabajador = async (req, res) => {
 //Ya no seria un delete, seria un UPDATE.
 export const deleteTrabajador = async (req, res) => {
   try {
+    const serverUrl = `${req.protocol}://${req.get("host")}/`;
     const { id } = req.params;
+    //?Seleccionar trabajador
+    const getTrabajador = await prisma.trabajador.findUnique({
+      where: {
+        id: Number(id),
+      },
+      select: {
+        foto: true,
+      },
+    });
+    //?Eliminar foto
+    if (getTrabajador.foto) {
+      const archivo = getTrabajador.foto.split(serverUrl)[1];
+      // eliminar un archivo
+      fs.unlink(archivo, (err) => {
+        if (err) {
+          throw err;
+        }
+        console.log(`DELETED FILE -> ${archivo}`);
+      });
+    }
+    //?Eliminar trabajador
     await prisma.trabajador.delete({
       where: {
         id: Number(id),

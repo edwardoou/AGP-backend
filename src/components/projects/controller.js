@@ -22,12 +22,12 @@ export const getProjects = async (req, res) => {
 // TODO: Generar una condicional en caso no exista el id para el UPDATE de la foreign key(para acciones, trabajadores, equipo_trabajadores y projects)
 //*POST
 export const createProject = async (req, res) => {
-  if (!req.file) {
-    req.body.archivo = null;
-  } else {
+  if (req.file) {
     //let localUrl = __dirname.replace(/\\/g, "/")
     const serverUrl = `${req.protocol}://${req.get("host")}`;
     req.body.archivo = serverUrl + "/uploads/" + req.file.filename;
+  } else {
+    req.body.archivo = null;
   }
   try {
     const workers = req.body.equipo_trabajadores.split(","); //["1", "2"];
