@@ -1,3 +1,4 @@
+const fs = require("fs");
 import { prisma } from "../../db";
 
 //*GET
@@ -19,19 +20,17 @@ export const getProjects = async (req, res) => {
 };
 
 // TODO: Generar una condicional en caso no exista el id para el UPDATE de la foreign key(para acciones, trabajadores, equipo_trabajadores y projects)
-// FIXME: No funciona la subida de archivos, probablemente incompatibilidad con multer
 //*POST
 export const createProject = async (req, res) => {
   if (!req.file) {
     req.body.archivo = null;
   } else {
-    //Que mejor sea base 64
-    //let serverUrl = __dirname.replace(/\\/g, "/")
-    let serverUrl = req.protocol + "://" + req.get("host");
+    //let localUrl = __dirname.replace(/\\/g, "/")
+    const serverUrl = `${req.protocol}://${req.get("host")}`;
     req.body.archivo = serverUrl + "/uploads/" + req.file.filename;
   }
   try {
-    let workers = req.body.equipo_trabajadores.split(","); //["1", "2"];
+    const workers = req.body.equipo_trabajadores.split(","); //["1", "2"];
     const result = await prisma.project.create({
       data: {
         ...req.body,
@@ -92,18 +91,36 @@ export const getProjectById = async (req, res) => {
 
 //*UPDATE
 export const updateProject = async (req, res) => {
+  const serverUrl = `${req.protocol}://${req.get("host")}/`;
   const { id } = req.params;
-  //Llega con comillas
-  if (
-    !req.body.archivo ||
-    req.body.archivo === "null" ||
-    req.body.archivo === "undefined"
-  ) {
-    req.body.archivo;
-  } else {
+
+  //?Eliminar archivo antiguo
+  const getProject = await prisma.project.findUnique({
+    where: {
+      id: Number(id),
+    },
+    select: {
+      archivo: true,
+    },
+  });
+  if (getProject.archivo) {
+    const archivo = getProject.archivo.split(serverUrl)[1];
+    // eliminar un archivo
+    fs.unlink(archivo, (err) => {
+      if (err) {
+        throw err;
+      }
+      console.log(`DELETED FILE -> ${archivo}`);
+    });
+  }
+
+  //?Reemplazar por nuevo
+  if (req.file) {
     //console.log(req.file);
     let serverUrl = req.protocol + "://" + req.get("host");
     req.body.archivo = serverUrl + "/uploads/" + req.file.filename;
+  } else {
+    req.body.archivo = null;
   }
   try {
     let workers = req.body.equipo_trabajadores.split(",");
@@ -151,7 +168,28 @@ export const updateProject = async (req, res) => {
 //*DELETE
 export const deleteProject = async (req, res) => {
   try {
+    const serverUrl = `${req.protocol}://${req.get("host")}/`;
     const { id } = req.params;
+    const getProject = await prisma.project.findUnique({
+      where: {
+        id: Number(id),
+      },
+      select: {
+        archivo: true,
+      },
+    });
+    //console.log(getProject);
+    if (getProject.archivo) {
+      const archivo = getProject.archivo.split(serverUrl)[1];
+      // eliminar un archivo
+      fs.unlink(archivo, (err) => {
+        if (err) {
+          throw err;
+        }
+        console.log(`DELETED FILE -> ${archivo}`);
+      });
+    }
+
     await prisma.project.delete({
       where: {
         id: Number(id),

@@ -62,12 +62,8 @@ export const getTrabajadorById = async (req, res) => {
 //*UPDATE
 export const updateTrabajador = async (req, res) => {
   //Llega con comillas
-  if (
-    !req.body.foto ||
-    req.body.foto === "null" ||
-    req.body.foto === "undefined"
-  ) {
-    req.body.foto;
+  if (!req.file) {
+    req.body.foto = null;
   } else {
     //console.log(req.file);
     let serverUrl = req.protocol + "://" + req.get("host");
@@ -91,6 +87,7 @@ export const updateTrabajador = async (req, res) => {
 
 //*DELETE
 //Ya que es trabajador mejor es no eliminar, solo poner su fecha de cese y listo
+//Ya no seria un delete, seria un UPDATE.
 export const deleteTrabajador = async (req, res) => {
   try {
     const { id } = req.params;
