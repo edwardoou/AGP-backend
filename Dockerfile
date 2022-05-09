@@ -33,4 +33,4 @@ COPY --chown=node:node . .
 EXPOSE 4000
 
 #CMD runs the command to start the application, in this case, node src/index.js.
-CMD [ "node", "src/index.js" ]
+CMD [ "node", "run","dev" ]
