@@ -50,6 +50,26 @@ export const getActividadById = async (req, res) => {
   }
 };
 
+//*UPDATE
+export const updateActividad = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await prisma.actividad.update({
+      where: {
+        id: Number(id),
+      },
+      data: req.body,
+      include: {
+        projects: { select: { nombre: true } },
+        trabajadores: { select: { nombre: true } },
+      },
+    });
+    res.status(200).json({ ok: true, data: result });
+  } catch (error) {
+    res.status(500).json({ ok: false, data: error.message });
+  }
+};
+
 //*DELETE
 export const deleteActividad = async (req, res) => {
   try {
@@ -60,26 +80,6 @@ export const deleteActividad = async (req, res) => {
       },
     });
     return res.status(200).json({ ok: true });
-  } catch (error) {
-    res.status(500).json({ ok: false, data: error.message });
-  }
-};
-
-//*UPDATE
-export const updateActividad = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await prisma.actividad.update({
-      where: {
-        id: Number(id),
-        include: {
-          projects: { select: { nombre: true } },
-          trabajadores: { select: { nombre: true } },
-        },
-      },
-      data: req.body,
-    });
-    res.status(200).json({ ok: true, data: result });
   } catch (error) {
     res.status(500).json({ ok: false, data: error.message });
   }
