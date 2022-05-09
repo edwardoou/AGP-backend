@@ -30,7 +30,7 @@ RUN npm install
 COPY --chown=node:node . .
 
 #The last step is to expose the port on the container, as we had defined in our entry index.js file:
-EXPOSE 8080
+EXPOSE 4000
 
-# The last step is to expose the port on the container, as we had defined in our entry index.js file:
+#CMD runs the command to start the application, in this case, node src/index.js.
 CMD [ "node", "src/index.js" ]
