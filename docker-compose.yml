@@ -1,25 +1,39 @@
-version: '3.3'
-
+version: "3"
 services:
-      
-  bb-db:
-    image: ${dockerId}/bulletin-board-db:v2
-    build:
-      context: ./bulletin-board-db
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: db
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - ACCEPT_EULA = Y
+      - MSSQL_SA_PASSWORD = dockeragp
+    volumes:
+      - dbdata:/data/db
     networks:
-      - bb-net
-
-  bb-app:
-    image: ${dockerId}/bulletin-board-app:v2
+      - app-network
+  expressjs:
     build:
-      context: ./bulletin-board-app
+      context: .
+      dockerfile: Dockerfile
+    image: nodejs
+    container_name: express
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - PORT = $PORT
+      - DATABASE_URL = $DATABASE_URL
     ports:
-      - "8080:8080"
-    depends_on:
-      - bb-db
-    restart: on-failure
+      - "4000:4000"
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
     networks:
-      - bb-net
-
+      - app-network
+    #command: /home/node/app/node_modules/.bin/nodemon app.js
 networks:
-  bb-net:
+  app-network:
+    driver: bridge
+volumes:
+  dbdata:
+  node_modules:
