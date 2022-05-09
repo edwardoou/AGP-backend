@@ -18,9 +18,7 @@ WORKDIR /home/node/app
 #then Docker will use the existing imager layer and avoid reinstalling node modules, hence faster build processes.
 COPY package*.json ./
 
-#Before running npm install, add the following line to switch the user to node to ensure 
-#all the application files and node_modules directory are owned by the non-root node user:
-USER node
+COPY --chown=node:node package.json .
 
 #Our container is now ready to run the npm install command. Add the following line to the Dockerfile:
 RUN npm install
@@ -29,6 +27,7 @@ RUN npm install
 #code into the application directory on the container with the right permissions and ownership, i.e. the non-root node user:
 COPY --chown=node:node . .
 
+USER node
 #The last step is to expose the port on the container, as we had defined in our entry index.js file:
 EXPOSE 4000
 
