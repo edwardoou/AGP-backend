@@ -6,8 +6,8 @@ services:
     restart: unless-stopped
     env_file: .env
     environment:
-      - ACCEPT_EULA = Y
-      - MSSQL_SA_PASSWORD = dockeragp
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=dockeragp
     volumes:
       - dbdata:/data/db
     networks:
@@ -21,8 +21,8 @@ services:
     restart: unless-stopped
     env_file: .env
     environment:
-      - PORT = $PORT
-      - DATABASE_URL = $DATABASE_URL
+      - PORT=$PORT
+      - DATABASE_URL=$DATABASE_URL
     ports:
       - "4000:4000"
     volumes:
